@@ -2,7 +2,7 @@ package com.vandson.marvel.character.api;
 
 import com.sun.istack.NotNull;
 import com.vandson.marvel.character.domain.MarvelCharacter;
-import org.springframework.hateoas.RepresentationModel;
+import com.vandson.marvel.compartilhado.EventSummary;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -17,7 +17,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * @author Vandson (vandson.vslima@gmail.com)
  * @since 19/10/2020
  */
-public class CharacterResponse extends RepresentationModel<CharacterResponse> {
+public class CharacterResponse implements EventSummary {
 
     private final int id;
     private final String name;
@@ -25,6 +25,7 @@ public class CharacterResponse extends RepresentationModel<CharacterResponse> {
     private final LocalDateTime modified;
     private final List<UrlResponse> urls;
     private ImageResponse thumbnail;
+    private final String resourceURI;
 
 
     public CharacterResponse(@NotNull @Valid MarvelCharacter marvelCharacter) {
@@ -38,7 +39,7 @@ public class CharacterResponse extends RepresentationModel<CharacterResponse> {
         if(Objects.nonNull(marvelCharacter.getThumbnail()))
             this.thumbnail = new ImageResponse(marvelCharacter.getThumbnail().getPath(), marvelCharacter.getThumbnail().getExtension());
 
-        this.add(linkTo(methodOn(CharacterController.class).get((long) this.id)).withSelfRel());
+        this.resourceURI = linkTo(methodOn(CharacterController.class).get((long) this.id)).toString();
     }
 
     public int getId() {
@@ -63,5 +64,9 @@ public class CharacterResponse extends RepresentationModel<CharacterResponse> {
 
     public ImageResponse getThumbnail() {
         return thumbnail;
+    }
+
+    public String getResourceURI() {
+        return resourceURI;
     }
 }

@@ -1,15 +1,16 @@
 package com.vandson.marvel.comics.domain;
 
 import com.vandson.marvel.character.domain.Image;
+import com.vandson.marvel.character.domain.MarvelCharacter;
 import com.vandson.marvel.character.domain.Url;
 
 import java.time.LocalDate;
 import java.util.List;
 
 /**
-* @author Vandson (vandson.vslima@gmail.com)
-* @since 20/10/2020
-*/
+ * @author Vandson (vandson.vslima@gmail.com)
+ * @since 20/10/2020
+ */
 public final class MarvelComicBuilder {
     private int digitalId;
     private String title;
@@ -37,6 +38,7 @@ public final class MarvelComicBuilder {
 //    private List<ComicPriceResponse> prices;
     private Image thumbnail;
     private List<Image> images;
+    private List<MarvelCharacter> characters;
 
     private MarvelComicBuilder() {
     }
@@ -130,7 +132,12 @@ public final class MarvelComicBuilder {
         return this;
     }
 
+    public MarvelComicBuilder withCharacters(List<MarvelCharacter> characters){
+        this.characters = characters;
+        return this;
+    }
+
     public MarvelComic build() {
-        return new MarvelComic(digitalId, title, issueNumber, variantDescription, description, modified, isbn, upc, diamondCode, ean, issn, format, pageCount, textObjects, urls, thumbnail, images);
+        return new MarvelComic(digitalId, title, issueNumber, variantDescription, description, modified, isbn, upc, diamondCode, ean, issn, format, pageCount, textObjects, urls, thumbnail, images, characters);
     }
 }
