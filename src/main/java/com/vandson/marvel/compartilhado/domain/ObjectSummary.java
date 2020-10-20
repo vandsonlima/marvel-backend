@@ -5,8 +5,8 @@ package com.vandson.marvel.compartilhado.domain;
  * @since 20/10/2020
  */
 public class ObjectSummary {
-    private String resourceURI;
-    private String name;
+    private final String resourceURI;
+    private final String name;
 
     public ObjectSummary(String resourceURI, String name) {
         this.resourceURI = resourceURI;

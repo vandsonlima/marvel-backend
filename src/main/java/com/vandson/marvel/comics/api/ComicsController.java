@@ -31,7 +31,8 @@ public class ComicsController {
 
     @GetMapping("/characters/{characterId}/comics")
     public List<Comic> getComics(@PathVariable Long characterId){
-        MarvelCharacter marvelCharacterSelected = marvelCharacterRepository.findById(characterId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Character not found"));
+        var marvelCharacterSelected = marvelCharacterRepository.findById(characterId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Character not found"));
         return comicsRepository.findAllByCharactersIs(marvelCharacterSelected);
     }
 

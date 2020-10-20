@@ -38,7 +38,7 @@ public class PageableImpl {
         if (!StringUtils.hasText(sortField))
             return Sort.by(Sort.DEFAULT_DIRECTION, "id");
 
-        List<String> list = Arrays.asList("modified", "-modified", "name", "-name");
+        var list = Arrays.asList("modified", "-modified", "name", "-name");
         if (!list.contains(sortField))
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Invalid or unrecognized ordering parameter");
 
