@@ -1,4 +1,4 @@
-package com.vandson.marvel.compartilhado;
+package com.vandson.marvel.compartilhado.errors;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

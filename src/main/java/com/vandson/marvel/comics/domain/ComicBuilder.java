@@ -1,9 +1,10 @@
 package com.vandson.marvel.comics.domain;
 
-import com.vandson.marvel.character.domain.Image;
+import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.character.domain.MarvelCharacter;
-import com.vandson.marvel.character.domain.Url;
+import com.vandson.marvel.compartilhado.domain.Url;
 
+import javax.persistence.Embedded;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @author Vandson (vandson.vslima@gmail.com)
  * @since 20/10/2020
  */
-public final class MarvelComicBuilder {
+public final class ComicBuilder {
     private int digitalId;
     private String title;
     private Double issueNumber;
@@ -23,7 +24,7 @@ public final class MarvelComicBuilder {
     private String diamondCode;
     private String ean;
     private String issn;
-    private String format;
+    private FormatComic format;
     private int pageCount;
     private List<String> textObjects;
     private List<Url> urls;
@@ -39,105 +40,125 @@ public final class MarvelComicBuilder {
     private Image thumbnail;
     private List<Image> images;
     private List<MarvelCharacter> characters;
+    private FormatType formatType;
+    @Embedded
+    private List<ComicDate> dates;
+    private List<ComicPrice> prices;
 
-    private MarvelComicBuilder() {
+    private ComicBuilder() {
     }
 
-    public static MarvelComicBuilder aMarvelComic() {
-        return new MarvelComicBuilder();
+    public static ComicBuilder aMarvelComic() {
+        return new ComicBuilder();
     }
 
-    public MarvelComicBuilder withDigitalId(int digitalId) {
+    public ComicBuilder withDigitalId(int digitalId) {
         this.digitalId = digitalId;
         return this;
     }
 
-    public MarvelComicBuilder withTitle(String title) {
+    public ComicBuilder withTitle(String title) {
         this.title = title;
         return this;
     }
 
-    public MarvelComicBuilder withIssueNumber(Double issueNumber) {
+    public ComicBuilder withIssueNumber(Double issueNumber) {
         this.issueNumber = issueNumber;
         return this;
     }
 
-    public MarvelComicBuilder withVariantDescription(String variantDescription) {
+    public ComicBuilder withVariantDescription(String variantDescription) {
         this.variantDescription = variantDescription;
         return this;
     }
 
-    public MarvelComicBuilder withDescription(String description) {
+    public ComicBuilder withDescription(String description) {
         this.description = description;
         return this;
     }
 
-    public MarvelComicBuilder withModified(LocalDate modified) {
+    public ComicBuilder withModified(LocalDate modified) {
         this.modified = modified;
         return this;
     }
 
-    public MarvelComicBuilder withIsbn(String isbn) {
+    public ComicBuilder withIsbn(String isbn) {
         this.isbn = isbn;
         return this;
     }
 
-    public MarvelComicBuilder withUpc(String upc) {
+    public ComicBuilder withUpc(String upc) {
         this.upc = upc;
         return this;
     }
 
-    public MarvelComicBuilder withDiamondCode(String diamondCode) {
+    public ComicBuilder withDiamondCode(String diamondCode) {
         this.diamondCode = diamondCode;
         return this;
     }
 
-    public MarvelComicBuilder withEan(String ean) {
+    public ComicBuilder withEan(String ean) {
         this.ean = ean;
         return this;
     }
 
-    public MarvelComicBuilder withIssn(String issn) {
+    public ComicBuilder withIssn(String issn) {
         this.issn = issn;
         return this;
     }
 
-    public MarvelComicBuilder withFormat(String format) {
+    public ComicBuilder withFormat(FormatComic format) {
         this.format = format;
         return this;
     }
 
-    public MarvelComicBuilder withPageCount(int pageCount) {
+    public ComicBuilder withPageCount(int pageCount) {
         this.pageCount = pageCount;
         return this;
     }
 
-    public MarvelComicBuilder withTextObjects(List<String> textObjects) {
+    public ComicBuilder withTextObjects(List<String> textObjects) {
         this.textObjects = textObjects;
         return this;
     }
 
-    public MarvelComicBuilder withUrls(List<Url> urls) {
+    public ComicBuilder withUrls(List<Url> urls) {
         this.urls = urls;
         return this;
     }
 
-    public MarvelComicBuilder withThumbnail(Image thumbnail) {
+    public ComicBuilder withThumbnail(Image thumbnail) {
         this.thumbnail = thumbnail;
         return this;
     }
 
-    public MarvelComicBuilder withImages(List<Image> images) {
+    public ComicBuilder withImages(List<Image> images) {
         this.images = images;
         return this;
     }
 
-    public MarvelComicBuilder withCharacters(List<MarvelCharacter> characters){
+    public ComicBuilder withCharacters(List<MarvelCharacter> characters){
         this.characters = characters;
         return this;
     }
 
-    public MarvelComic build() {
-        return new MarvelComic(digitalId, title, issueNumber, variantDescription, description, modified, isbn, upc, diamondCode, ean, issn, format, pageCount, textObjects, urls, thumbnail, images, characters);
+    public ComicBuilder withFormatType(FormatType formatType){
+        this.formatType = formatType;
+        return this;
+    }
+
+    public ComicBuilder withDates(List<ComicDate> dates){
+        this.dates = dates;
+        return this;
+    }
+
+    public ComicBuilder withPrices(List<ComicPrice> prices){
+        this.prices = prices;
+        return this;
+    }
+
+    public Comic build() {
+
+        return new Comic(digitalId, title, issueNumber, variantDescription, description, modified, isbn, upc, diamondCode, ean, issn, format, pageCount, textObjects, urls, formatType, dates, prices, thumbnail, images, characters);
     }
 }

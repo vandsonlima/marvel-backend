@@ -1,4 +1,4 @@
-package com.vandson.marvel.compartilhado;
+package com.vandson.marvel.compartilhado.errors;
 
 /**
  * @author Vandson Lima (vandson.vslima@gmail.com)

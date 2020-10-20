@@ -1,11 +1,9 @@
 package com.vandson.marvel.initialize;
 
-import com.vandson.marvel.character.domain.Image;
+import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.character.domain.MarvelCharacter;
 import com.vandson.marvel.character.domain.MarvelCharacterRepository;
-import com.vandson.marvel.comics.domain.ComicRepository;
-import com.vandson.marvel.comics.domain.MarvelComic;
-import com.vandson.marvel.comics.domain.MarvelComicBuilder;
+import com.vandson.marvel.comics.domain.*;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -48,7 +46,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         MarvelCharacter hulk = new MarvelCharacter("Hulk", "Hulk smash", LocalDateTime.now());
         hulk.addThumbnail("http:images.io/hjulk", "jpeg");
 
-        MarvelCharacter blackWidow = new MarvelCharacter("black widow", "the smallest", LocalDateTime.now());
+        MarvelCharacter blackWidow = new MarvelCharacter("Black widow", "the smallest", LocalDateTime.now());
         blackWidow.addThumbnail("imageBucket.io/blackwidow", "gif");
 
         marvelCharacterRepository.saveAll(Arrays.asList(ironMan, captain, hulk, blackWidow));
@@ -58,21 +56,57 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
 
         MarvelCharacter ironMan = marvelCharacterRepository.getOne(1L);
         MarvelCharacter captain = marvelCharacterRepository.getOne(2L);
-        List<MarvelComic> comics = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            MarvelComic marvelComic = MarvelComicBuilder.aMarvelComic()
+        List<Comic> comics = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Comic comic = ComicBuilder.aMarvelComic()
                     .withTitle("the iron man ed"+ i)
                     .withDescription("incredible")
                     .withModified(LocalDate.now())
                     .withDiamondCode("DIAMND-001"+i)
-                    .withFormat("comic")
+                    .withFormat(FormatComic.Comic)
                     .withIssueNumber(200d)
+                    .withFormatType(FormatType.Comic)
                     .withCharacters(Arrays.asList(ironMan, captain))
                     .withThumbnail(new Image("type", "jpeg"))
                     .withTextObjects(Arrays.asList("Ironman", "captain", "civil", "war"))
                     .build();
-            comics.add(marvelComic);
+            comics.add(comic);
         }
+
+        for (int i = 0; i < 5; i++) {
+            Comic comic = ComicBuilder.aMarvelComic()
+                    .withTitle("the iron man ed")
+                    .withDescription("incredible")
+                    .withModified(LocalDate.now())
+                    .withDiamondCode("DIAMND-00")
+                    .withFormat(FormatComic.Digital_comic)
+                    .withIssueNumber(200d)
+                    .withCharacters(Arrays.asList(ironMan, captain))
+                    .withThumbnail(new Image("type", "jpeg"))
+                    .withTextObjects(Arrays.asList("Ironman", "captain", "civil", "war"))
+                    .withFormatType(FormatType.Comic)
+                    .build();
+        }
+
+
+        Comic comic2 = ComicBuilder.aMarvelComic()
+                .withTitle("the iron man ed")
+                .withDescription("incredible")
+                .withModified(LocalDate.now())
+                .withDiamondCode("DIAMND-00")
+                .withFormat(FormatComic.Comic)
+                .withIssueNumber(200d)
+                .withCharacters(Arrays.asList(ironMan, captain))
+                .withThumbnail(new Image("type", "jpeg"))
+                .withTextObjects(Arrays.asList("Ironman", "captain", "civil", "war"))
+                .withFormatType(FormatType.Collection)
+                .withDates(Arrays.asList(new ComicDate("type", LocalDate.of(1980,2, 12)),
+                        new ComicDate("type", LocalDate.of(1990,2, 20)),
+                        new ComicDate("type",LocalDate.now())))
+                .build();
+
+        comics.add(comic2);
+
         marvelComicsRepository.saveAll(comics);
     }
 }

@@ -1,4 +1,4 @@
-package com.vandson.marvel.compartilhado;
+package com.vandson.marvel.compartilhado.errors;
 
 import java.util.ArrayList;
 import java.util.List;

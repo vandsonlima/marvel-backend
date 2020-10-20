@@ -1,13 +1,14 @@
 package com.vandson.marvel.comics.api;
 
-import com.vandson.marvel.character.api.CharacterResponse;
-import com.vandson.marvel.character.api.ImageResponse;
-import com.vandson.marvel.character.api.UrlResponse;
-import com.vandson.marvel.character.domain.Image;
+import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.character.domain.MarvelCharacter;
-import com.vandson.marvel.comics.domain.MarvelComic;
-import com.vandson.marvel.compartilhado.SummaryObject;
-import org.springframework.util.CollectionUtils;
+import com.vandson.marvel.compartilhado.domain.Url;
+import com.vandson.marvel.comics.domain.Comic;
+import com.vandson.marvel.comics.domain.ComicDate;
+import com.vandson.marvel.comics.domain.ComicPrice;
+import com.vandson.marvel.compartilhado.domain.ObjectSummary;
+import com.vandson.marvel.compartilhado.domain.SummaryList;
+import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * @author Vandson (vandson.vslima@gmail.com)
  * @since 20/10/2020
  */
+@Getter
 public class ComicResponse {
 
     private int id;
@@ -38,139 +40,59 @@ public class ComicResponse {
     private String format;
     private int pageCount;
     private List<String> textObjects;
-    private List<UrlResponse> urls;
+    private List<Url> urls;
     private String resourceURI;
-//    private List<SeriesResponse> series;
-//    @ManyToMany
-//    private List<ComicResponse> variants;
-//    @ManyToMany
-//    private List<ComicResponse> collections;
 
-//    private List<ComicResponse> collectedIssues;
-//    private List<ComicDateResponse> dates;
-//    private List<ComicPriceResponse> prices;
+    private List<ObjectSummary> variants;
+    private List<ObjectSummary> collections;
+    private List<ObjectSummary> collectedIssues;
+
+    private List<ComicDate> dates;
+    private List<ComicPrice> prices;
     private Image thumbnail;
-    private List<ImageResponse> images;
+    private List<Image> images;
+    private SummaryList characters;
 
-    private SummaryObject characters;
-//    private List<StoriesResponse> stories;
-//    private List<EventsResponse> events;
+//    private SummaryList stories;
+//    private SummaryList events;
+//    private SummaryList series;
+
 
     public ComicResponse() {
 
     }
 
-    public ComicResponse fromModel(MarvelComic marvelComic){
-        this.id = marvelComic.getId().intValue();
-        this.digitalId = marvelComic.getDigitalId();
-        this.title = marvelComic.getTitle();
-        this.issueNumber = marvelComic.getIssueNumber();
-        this.variantDescription = marvelComic.getVariantDescription();
-        this.description = marvelComic.getDescription();
-        this.modified = marvelComic.getModified();
-        this.isbn = marvelComic.getIsbn();
-        this.upc = marvelComic.getUpc();
-        this.diamondCode = marvelComic.getDiamondCode();
-        this.ean = marvelComic.getEan();
-        this.issn = marvelComic.getIssn();
-        this.format = marvelComic.getFormat();
-        this.pageCount = marvelComic.getPageCount();
-        this.textObjects = marvelComic.getTextObjects();
-        this.urls = marvelComic.getUrls().stream().map(url -> new UrlResponse(url.getType(), url.getUrl())).collect(Collectors.toList());
-        this.thumbnail = marvelComic.getThumbnail();
-        this.images = marvelComic.getImages().stream().map(image -> new ImageResponse(image.getPath(), image.getExtension())).collect(Collectors.toList());
+    public ComicResponse fromModel(Comic comic){
+        this.id = comic.getId().intValue();
+        this.digitalId = comic.getDigitalId();
+        this.title = comic.getTitle();
+        this.issueNumber = comic.getIssueNumber();
+        this.variantDescription = comic.getVariantDescription();
+        this.description = comic.getDescription();
+        this.modified = comic.getModified();
+        this.isbn = comic.getIsbn();
+        this.upc = comic.getUpc();
+        this.diamondCode = comic.getDiamondCode();
+        this.ean = comic.getEan();
+        this.issn = comic.getIssn();
+        this.format = comic.getFormat().getName();
+        this.pageCount = comic.getPageCount();
+        this.textObjects = comic.getTextObjects();
+        this.urls = comic.getUrls();
+        this.thumbnail = comic.getThumbnail();
+        this.images = comic.getImages();
+        this.dates = comic.getDates();
+        this.prices = comic.getPrices();
         this.resourceURI = linkTo(methodOn(ComicsController.class).getOne((long) this.id)).toString();
-        addSummaryCharacters(marvelComic.getCharacters());
+        addSummaryCharacters(comic.getCharacters());
         return this;
     }
 
     private void addSummaryCharacters(@NotNull List<MarvelCharacter> marvelCharacters) {
-        this.characters = null;
-        List<CharacterResponse> characterResponses = marvelCharacters.stream().map(CharacterResponse::new).collect(Collectors.toList());
-        if(!CollectionUtils.isEmpty(marvelCharacters)){
-            this.characters = new SummaryObject(characterResponses, resourceURI);
-        }
-
-
+        List<ObjectSummary> list = marvelCharacters.stream()
+                .map(marvelCharacter -> new ObjectSummary(marvelCharacter.getResourceURI(), marvelCharacter.getName()))
+                .collect(Collectors.toList());
+        this.characters = new SummaryList(list, resourceURI);
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getDigitalId() {
-        return digitalId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Double getIssueNumber() {
-        return issueNumber;
-    }
-
-    public String getVariantDescription() {
-        return variantDescription;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public LocalDate getModified() {
-        return modified;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public String getUpc() {
-        return upc;
-    }
-
-    public String getDiamondCode() {
-        return diamondCode;
-    }
-
-    public String getEan() {
-        return ean;
-    }
-
-    public String getIssn() {
-        return issn;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public int getPageCount() {
-        return pageCount;
-    }
-
-    public List<String> getTextObjects() {
-        return textObjects;
-    }
-
-    public List<UrlResponse> getUrls() {
-        return urls;
-    }
-
-    public Image getThumbnail() {
-        return thumbnail;
-    }
-
-    public List<ImageResponse> getImages() {
-        return images;
-    }
-
-    public String getResourceURI() {
-        return resourceURI;
-    }
-
-    public SummaryObject getCharacters() {
-        return characters;
-    }
 }

@@ -1,10 +1,14 @@
 package com.vandson.marvel.character.api;
 
+import com.vandson.marvel.character.domain.CharactersSpecification;
+import com.vandson.marvel.character.domain.FilterCharacter;
 import com.vandson.marvel.character.domain.MarvelCharacterRepository;
+import com.vandson.marvel.compartilhado.domain.PageableImpl;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,9 +36,25 @@ public class CharacterController {
     }
 
     @GetMapping("/characters")
-    public List<CharacterResponse> getAll(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "nameStartsWith", required = false) String nameStartsWith, @RequestParam(value = "modifiedSince", required = false) Date modifiedSince ){
-        return marvelCharacterRepository.findAll()
-                .stream().map(CharacterResponse::new)
+    public List<CharacterResponse> getAll(@RequestParam(value = "limit", required = false) Integer limit,
+                                          @RequestParam(value = "offset", required = false) Integer offset,
+                                          @RequestParam(value = "orderBy", required = false) String sortField,
+                                          @RequestParam(value = "name", required = false) String name,
+                                          @RequestParam(value = "nameStartsWith", required = false) String nameStartsWith,
+                                          @RequestParam(value = "modifiedSince", required = false)
+                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime modifiedSince) {
+
+        return marvelCharacterRepository.findAll(CharactersSpecification
+                .filter(FilterCharacter.builder()
+                        .name(name)
+                        .nameStartsWith(nameStartsWith)
+                        .modifiedSince(modifiedSince)
+                        .build()), PageableImpl.of(offset, limit, sortField))
+                .getContent()
+                .stream()
+                .map(CharacterResponse::new)
                 .collect(Collectors.toList());
     }
+
+
 }

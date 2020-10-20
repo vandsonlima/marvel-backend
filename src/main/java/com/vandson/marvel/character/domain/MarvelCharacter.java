@@ -1,12 +1,18 @@
 package com.vandson.marvel.character.domain;
 
 import com.sun.istack.NotNull;
+import com.vandson.marvel.character.api.CharacterController;
+import com.vandson.marvel.compartilhado.domain.Image;
+import com.vandson.marvel.compartilhado.domain.Url;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * @author Vandson (vandson.vslima@gmail.com)
@@ -28,6 +34,7 @@ public class MarvelCharacter {
     private List<Url> urls = new ArrayList<>();
     @Embedded
     private Image thumbnail;
+
 
     public MarvelCharacter(@NotBlank String name, @NotBlank String description, @NotNull LocalDateTime modified) {
         this.name = name;
@@ -69,5 +76,9 @@ public class MarvelCharacter {
 
     public Image getThumbnail() {
         return thumbnail;
+    }
+
+    public String getResourceURI() {
+        return  linkTo(methodOn(CharacterController.class).get((long) this.id)).toString();
     }
 }

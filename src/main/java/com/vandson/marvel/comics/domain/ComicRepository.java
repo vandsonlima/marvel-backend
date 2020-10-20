@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ComicRepository extends JpaRepository<MarvelComic, Long> {
+public interface ComicRepository extends JpaRepository<Comic, Long> {
 
-    public List<MarvelComic> findAllByCharactersIs(MarvelCharacter marvelCharacter);
+    public List<Comic> findAllByCharactersIs(MarvelCharacter marvelCharacter);
 }

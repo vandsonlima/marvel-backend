@@ -1,5 +1,8 @@
-package com.vandson.marvel.compartilhado;
+package com.vandson.marvel.compartilhado.domain;
 
+import org.springframework.util.Assert;
+
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,14 +10,17 @@ import java.util.stream.Collectors;
  * @author Vandson (vandson.vslima@gmail.com)
  * @since 20/10/2020
  */
-public class SummaryObject {
+public class SummaryList {
     public static final int MAX_SIZE_ITEMS = 20;
     private final int available;
     private final int returned;
     private final String collectionURI;
-    private final List<EventSummary> items;
+    private final List<ObjectSummary> items;
 
-    public SummaryObject(List<EventSummary> items, String resourceURI) {
+    public SummaryList(@NotNull List<ObjectSummary> items, @NotNull String resourceURI) {
+        Assert.notNull(items, "Os itens não podem ser nulos");
+        Assert.hasLength(resourceURI,"resourceURI não pode ser nula");
+
         this.available = items.size();
         this.returned = Math.min(items.size(), MAX_SIZE_ITEMS);
         this.collectionURI = resourceURI;
@@ -33,7 +39,7 @@ public class SummaryObject {
         return collectionURI;
     }
 
-    public List<EventSummary> getItems() {
+    public List<ObjectSummary> getItems() {
         return items;
     }
 }

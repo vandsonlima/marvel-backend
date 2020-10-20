@@ -1,4 +1,4 @@
-package com.vandson.marvel.character.domain;
+package com.vandson.marvel.compartilhado.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
