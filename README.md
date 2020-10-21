@@ -17,7 +17,7 @@ Apresentação da proposta técnica em processo seletivo
 
 ## Execução do projeto
 * Clonar ou baixar o [projeto](https://github.com/vandsonlima/marvel-backend.git)
-''' ./mvnw clean package && java -jar target/marvel-0.0.1-SNAPSHOT.jar '''
+  ```./mvnw clean package && java -jar target/marvel-0.0.1-SNAPSHOT.jar```
 
 ## Como acessar
 * Acessar os endpoints a partir da url http://localhost:8080/
