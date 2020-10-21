@@ -1,14 +1,19 @@
 package com.vandson.marvel.character.api;
 
 import com.sun.istack.NotNull;
-import com.vandson.marvel.compartilhado.domain.Image;
+import com.vandson.marvel.comics.api.ComicsController;
+import com.vandson.marvel.comics.domain.Comic;
+import com.vandson.marvel.compartilhado.domain.*;
 import com.vandson.marvel.character.domain.MarvelCharacter;
-import com.vandson.marvel.compartilhado.domain.Url;
 import lombok.Getter;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * @author Vandson (vandson.vslima@gmail.com)
@@ -24,7 +29,7 @@ public class CharacterResponse {
     private final List<Url> urls;
     private final Image thumbnail;
     private final String resourceURI;
-
+    private SummaryList comics;
     //private SummaryObject series;
     //private SummaryObject stories;
     //private SummaryObject events;
@@ -37,7 +42,17 @@ public class CharacterResponse {
         this.urls = marvelCharacter.getUrls();
         this.thumbnail = marvelCharacter.getThumbnail();
         this.resourceURI = marvelCharacter.getResourceURI();
+        fillComics(marvelCharacter.getComics());
     }
 
+    private void fillComics(List<Comic> comics) {
+        this.comics = new SummaryList( comics
+                .stream()
+                .map(comic -> new ObjectSummary(comic.getResourceURI(), comic.getTitle()))
+                .collect(Collectors.toList()), linkTo(methodOn(ComicsController.class).getComics((long) this.id)).toString());
+    }
 
+    public SummaryList getComics() {
+        return comics;
+    }
 }

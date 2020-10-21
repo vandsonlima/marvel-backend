@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Vandson (vaondson.vslima@gmail.com)
@@ -30,15 +31,19 @@ public class ComicsController {
     }
 
     @GetMapping("/characters/{characterId}/comics")
-    public List<Comic> getComics(@PathVariable Long characterId){
+    public List<ComicResponse> getComics(@PathVariable Long characterId){
         var marvelCharacterSelected = marvelCharacterRepository.findById(characterId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Character not found"));
-        return comicsRepository.findAllByCharactersIs(marvelCharacterSelected);
+       return comicsRepository.findAllByCharactersIs(marvelCharacterSelected)
+               .stream()
+               .map(comic -> new ComicResponse().fromModel(comic))
+               .collect(Collectors.toList());
     }
 
     @GetMapping("/comics/{comicId}")
-    public Comic getOne(@PathVariable Long comicId) {
-        return comicsRepository.findById(comicId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comics Not Found"));
+    public ComicResponse getOne(@PathVariable Long comicId) {
+        Comic comic = comicsRepository.findById(comicId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comic Not Found"));
+        return new ComicResponse().fromModel(comic);
     }
 }

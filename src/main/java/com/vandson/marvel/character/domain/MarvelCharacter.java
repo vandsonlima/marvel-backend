@@ -2,6 +2,7 @@ package com.vandson.marvel.character.domain;
 
 import com.sun.istack.NotNull;
 import com.vandson.marvel.character.api.CharacterController;
+import com.vandson.marvel.comics.domain.Comic;
 import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.compartilhado.domain.Url;
 
@@ -34,6 +35,9 @@ public class MarvelCharacter {
     private List<Url> urls = new ArrayList<>();
     @Embedded
     private Image thumbnail;
+
+    @ManyToMany(mappedBy = "characters")
+    private List<Comic> comics;
 
 
     public MarvelCharacter(@NotBlank String name, @NotBlank String description, @NotNull LocalDateTime modified) {
@@ -76,6 +80,10 @@ public class MarvelCharacter {
 
     public Image getThumbnail() {
         return thumbnail;
+    }
+
+    public List<Comic> getComics() {
+        return comics;
     }
 
     public String getResourceURI() {

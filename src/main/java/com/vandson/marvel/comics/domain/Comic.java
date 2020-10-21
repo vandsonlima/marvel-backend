@@ -1,5 +1,7 @@
 package com.vandson.marvel.comics.domain;
 
+import com.vandson.marvel.character.api.CharacterController;
+import com.vandson.marvel.comics.api.ComicsController;
 import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.character.domain.MarvelCharacter;
 import com.vandson.marvel.compartilhado.domain.Url;
@@ -9,6 +11,9 @@ import org.springframework.util.Assert;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * @author Vandson (vandson.vslima@gmail.com)
@@ -91,6 +96,10 @@ public class Comic {
         this.characters = characters;
         this.dates = dates;
         this.prices = prices;
+    }
+
+    public String getResourceURI(){
+        return linkTo(methodOn(ComicsController.class).getOne((long) this.id)).toString();
     }
 
 }

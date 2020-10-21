@@ -1,5 +1,6 @@
 package com.vandson.marvel.comics.api;
 
+import com.vandson.marvel.character.api.CharacterController;
 import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.character.domain.MarvelCharacter;
 import com.vandson.marvel.compartilhado.domain.Url;
@@ -92,7 +93,7 @@ public class ComicResponse {
         List<ObjectSummary> list = marvelCharacters.stream()
                 .map(marvelCharacter -> new ObjectSummary(marvelCharacter.getResourceURI(), marvelCharacter.getName()))
                 .collect(Collectors.toList());
-        this.characters = new SummaryList(list, resourceURI);
+        this.characters = new SummaryList(list, linkTo(methodOn(CharacterController.class).getAll(null, null, null, null, null, null)).toString());
     }
 
 }
