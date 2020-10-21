@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 @Builder
 @Getter
-public class DataWraper {
+public class DataWrapper {
     private final int code;
     private final String status;
     private final String etag;

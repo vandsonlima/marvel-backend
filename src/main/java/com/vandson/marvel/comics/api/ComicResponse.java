@@ -1,14 +1,14 @@
 package com.vandson.marvel.comics.api;
 
-import com.vandson.marvel.character.api.CharacterController;
-import com.vandson.marvel.compartilhado.domain.Image;
+import com.vandson.marvel.character.api.CharacterFinderController;
 import com.vandson.marvel.character.domain.MarvelCharacter;
-import com.vandson.marvel.compartilhado.domain.Url;
 import com.vandson.marvel.comics.domain.Comic;
 import com.vandson.marvel.comics.domain.ComicDate;
 import com.vandson.marvel.comics.domain.ComicPrice;
+import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.compartilhado.domain.ObjectSummary;
 import com.vandson.marvel.compartilhado.domain.SummaryList;
+import com.vandson.marvel.compartilhado.domain.Url;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
@@ -93,7 +93,7 @@ public class ComicResponse {
         List<ObjectSummary> list = marvelCharacters.stream()
                 .map(marvelCharacter -> new ObjectSummary(marvelCharacter.getResourceURI(), marvelCharacter.getName()))
                 .collect(Collectors.toList());
-        this.characters = new SummaryList(list, linkTo(methodOn(CharacterController.class).getAll(null, null, null, null, null, null)).toString());
+        this.characters = new SummaryList(list, linkTo(methodOn(CharacterFinderController.class).getAll(null, null, null, null, null, null)).toString());
     }
 
 }
