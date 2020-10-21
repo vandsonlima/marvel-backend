@@ -30,10 +30,11 @@ public class CharacterController extends MarvelController {
 
     @GetMapping("/characters/{characterId}")
     public ResponseEntity get(@PathVariable("characterId") Long id) {
-        Optional<MarvelCharacter> optionalMarvelCharacter = marvelCharacterRepository.findById(id);
+        var optionalMarvelCharacter = marvelCharacterRepository.findById(id);
         if(optionalMarvelCharacter.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not found.");
-        MarvelCharacter marvelCharacter = optionalMarvelCharacter.get();
+
+        var marvelCharacter = optionalMarvelCharacter.get();
         return getResponseEntityDataWrappperObject(new CharacterResponse(marvelCharacter));
     }
 }

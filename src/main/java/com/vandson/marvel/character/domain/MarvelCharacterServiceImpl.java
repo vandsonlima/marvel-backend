@@ -27,7 +27,7 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
                 .build();
 
         var characterSpecification = CharactersSpecification.filter(filterCharacter);
-        return marvelCharacterRepository.findAll(characterSpecification, PageableImpl.of(offset, limit, sortField)).getContent();
+        return marvelCharacterRepository.findAll(characterSpecification, new PageableImpl(offset, limit, sortField).getPageable()).getContent();
     }
 
     @Override

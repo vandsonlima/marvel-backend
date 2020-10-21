@@ -40,11 +40,11 @@ public class CharacterFinderController extends MarvelController {
                                  @RequestParam(value = "modifiedSince", required = false)
                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime modifiedSince) {
 
-        List<MarvelErrorMessage> marvelErrorMessages = charactersFilterValidator.validateParameters(limit, sortField);
+        var marvelErrorMessages = charactersFilterValidator.validateParameters(limit, sortField);
         if(!marvelErrorMessages.isEmpty())
             return ResponseEntity.status(HttpStatus.CONFLICT).body(marvelErrorMessages);
 
-        List<CharacterResponse> characterResponses = marvelCharacterService.getAllByFilter( name, nameStartsWith, modifiedSince, offset, limit, sortField)
+        var characterResponses = marvelCharacterService.getAllByFilter( name, nameStartsWith, modifiedSince, offset, limit, sortField)
                 .stream()
                 .map(CharacterResponse::new)
                 .collect(Collectors.toList());
