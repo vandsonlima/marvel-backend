@@ -16,11 +16,11 @@ class CharactersFilterValidatorTest {
 
     @BeforeEach
     void setUp() {
-        charactersFilterValidator = new CharactersFilterValidatorImpl();
+        charactersFilterValidator = new CharactersFilterValidator();
     }
 
     @Test
-    @DisplayName("Valores nulos não devem gerar resultado")
+    @DisplayName("Valores nulos não devem gerar resultado com erros")
     public void validateParametersWithNullValue() {
         List<MarvelErrorMessage> results = charactersFilterValidator.validateParameters(null, null);
         Assertions.assertEquals(List.of(), results);

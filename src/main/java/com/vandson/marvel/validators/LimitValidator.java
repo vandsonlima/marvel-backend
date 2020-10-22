@@ -1,20 +1,19 @@
-package com.vandson.marvel.compartilhado.domain;
+package com.vandson.marvel.validators;
 
 import com.vandson.marvel.compartilhado.errors.MarvelErrorMessage;
 import org.springframework.http.HttpStatus;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * @author Vandson (vandson.vslima@gmail.com)
- * @since 21/10/2020
+ * @since 22/10/2020
  */
-public class FilterValidator {
+public class LimitValidator {
 
-    protected List<MarvelErrorMessage> validateLimit(Integer limit) {
+    public List<? extends MarvelErrorMessage> validate(Integer limit) {
         List<MarvelErrorMessage> errors = new ArrayList<>();
         if (Objects.nonNull(limit)) {
             if (limit <= 0)
@@ -25,12 +24,5 @@ public class FilterValidator {
         return errors;
     }
 
-    protected List<MarvelErrorMessage> validateOrderBy(String sortField, @NotNull List<?> acceptedList) {
-        List<MarvelErrorMessage> errors = new ArrayList<>();
-        if (Objects.nonNull(sortField)) {
-            if (!acceptedList.contains(sortField))
-                errors.add(new MarvelErrorMessage(HttpStatus.CONFLICT.value(), "Invalid or unrecognized ordering parameter."));
-        }
-        return errors;
-    }
+
 }
