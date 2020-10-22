@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class ComicFormatValidator {
 
-    public List<? extends MarvelErrorMessage> validate(String formatComic) {
+    public List<MarvelErrorMessage> validate(String formatComic) {
         List<MarvelErrorMessage> errors = new ArrayList<>();
         if (StringUtils.hasLength(formatComic) && (Objects.isNull(FormatComic.getByName(formatComic))))
             errors.add(new MarvelErrorMessage(HttpStatus.CONFLICT.value(), "Invalid or unrecognized parameter."));

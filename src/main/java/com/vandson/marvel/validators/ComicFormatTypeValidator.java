@@ -7,7 +7,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Filter;
 
 /**
  * @author Vandson (vandson.vslima@gmail.com)
@@ -15,7 +14,7 @@ import java.util.logging.Filter;
  */
 public class ComicFormatTypeValidator {
 
-    public List<? extends MarvelErrorMessage> validate(String formatType) {
+    public List<MarvelErrorMessage> validate(String formatType) {
         List<MarvelErrorMessage> errors = new ArrayList<>();
         if (StringUtils.hasLength(formatType)) {
             try{

@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 public class FilterCharacter {
-    private String name;
-    private String nameStartsWith;
-    private LocalDateTime modifiedSince;
+    private final String name;
+    private final String nameStartsWith;
+    private final LocalDateTime modifiedSince;
 
 
 

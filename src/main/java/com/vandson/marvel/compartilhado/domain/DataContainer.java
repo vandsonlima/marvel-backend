@@ -13,9 +13,9 @@ import java.util.Objects;
 public class DataContainer {
     private Integer offset;
     private Integer limit;
-    private Long total;
+    private final Long total;
     private Integer count = 0;
-    private List<?> items;
+    private final List<?> items;
 
 
     public DataContainer(Integer offset,

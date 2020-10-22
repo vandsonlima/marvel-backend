@@ -1,9 +1,8 @@
 package com.vandson.marvel.comics.domain;
 
-import com.vandson.marvel.character.api.CharacterController;
+import com.vandson.marvel.character.domain.MarvelCharacter;
 import com.vandson.marvel.comics.api.ComicsController;
 import com.vandson.marvel.compartilhado.domain.Image;
-import com.vandson.marvel.character.domain.MarvelCharacter;
 import com.vandson.marvel.compartilhado.domain.Url;
 import lombok.Getter;
 import org.springframework.util.Assert;
@@ -99,7 +98,7 @@ public class Comic {
     }
 
     public String getResourceURI(){
-        return linkTo(methodOn(ComicsController.class).getOne((long) this.id)).toString();
+        return linkTo(methodOn(ComicsController.class).getOne(this.id)).toString();
     }
 
 }

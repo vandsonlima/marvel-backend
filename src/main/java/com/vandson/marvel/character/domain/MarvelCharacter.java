@@ -34,7 +34,7 @@ public class MarvelCharacter {
     @NotNull
     private LocalDateTime modified;
     @ElementCollection
-    private List<Url> urls = new ArrayList<>();
+    private final List<Url> urls = new ArrayList<>();
     @Embedded
     private Image thumbnail;
 
@@ -60,6 +60,6 @@ public class MarvelCharacter {
     }
 
     public String getResourceURI() {
-        return  linkTo(methodOn(CharacterController.class).get((long) this.id)).toString();
+        return  linkTo(methodOn(CharacterController.class).get(this.id)).toString();
     }
 }

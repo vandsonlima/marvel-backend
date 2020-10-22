@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 public class LimitValidator {
 
-    public List<? extends MarvelErrorMessage> validate(Integer limit) {
+    public List<MarvelErrorMessage> validate(Integer limit) {
         List<MarvelErrorMessage> errors = new ArrayList<>();
         if (Objects.nonNull(limit)) {
             if (limit <= 0)
