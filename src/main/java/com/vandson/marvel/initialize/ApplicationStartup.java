@@ -56,6 +56,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
 
         MarvelCharacter ironMan = marvelCharacterRepository.getOne(1L);
         MarvelCharacter captain = marvelCharacterRepository.getOne(2L);
+        MarvelCharacter blackWidow = marvelCharacterRepository.getOne(4L);
         List<Comic> comics = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Comic comic = ComicBuilder.aMarvelComic()
@@ -106,6 +107,25 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
                 .build();
 
         comics.add(comic2);
+
+
+        Comic comic3 = ComicBuilder.aMarvelComic()
+                .withTitle("black widow one")
+                .withDescription("incrediblesss")
+                .withModified(LocalDate.now())
+                .withDiamondCode("DIAMND-10")
+                .withFormat(FormatComic.Digital_comic)
+                .withIssueNumber(200d)
+                .withCharacters(Arrays.asList(blackWidow))
+                .withThumbnail(new Image("type", "jpeg"))
+                .withTextObjects(Arrays.asList("Ironman", "captain", "civil", "war"))
+                .withFormatType(FormatType.comic)
+                .withDates(Arrays.asList(new ComicDate("type", LocalDate.of(1980,2, 12)),
+                        new ComicDate("type", LocalDate.of(1990,2, 20)),
+                        new ComicDate("type",LocalDate.now())))
+                .build();
+
+        comics.add(comic3);
 
         marvelComicsRepository.saveAll(comics);
     }

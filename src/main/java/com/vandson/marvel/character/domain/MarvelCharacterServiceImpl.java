@@ -19,19 +19,21 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
         this.marvelCharacterRepository = marvelCharacterRepository;
     }
 
-    public List<MarvelCharacter> getAllByFilter(String name, String nameStartsWith, LocalDateTime modifiedSince, Integer offset, Integer limit, String sortField){
+    public List<MarvelCharacter> getAllByFilter(String name, String nameStartsWith, LocalDateTime modifiedSince, Integer offset, Integer limit, String sortField, String comics){
         var filterCharacter = FilterCharacter.builder()
                 .name(name)
                 .nameStartsWith(nameStartsWith)
                 .modifiedSince(modifiedSince)
+                .comics(comics)
                 .build();
+        
 
         var characterSpecification = CharactersSpecification.filter(filterCharacter);
         return marvelCharacterRepository.findAll(characterSpecification, new PageableImpl(offset, limit, sortField).getPageable()).getContent();
     }
 
     @Override
-    public long countByFilter(String name, String nameStartsWith, LocalDateTime modifiedSince) {
+    public long countByFilter(String name, String nameStartsWith, LocalDateTime modifiedSince, String comics) {
         var filterCharacter = FilterCharacter.builder()
                 .name(name)
                 .nameStartsWith(nameStartsWith)

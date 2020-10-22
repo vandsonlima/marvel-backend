@@ -2,7 +2,6 @@ package com.vandson.marvel.character.api;
 
 import com.vandson.marvel.character.domain.MarvelCharacterService;
 import com.vandson.marvel.compartilhado.api.MarvelController;
-import com.vandson.marvel.compartilhado.errors.MarvelErrorMessage;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -38,18 +36,19 @@ public class CharacterFinderController extends MarvelController {
                                  @RequestParam(value = "name", required = false) String name,
                                  @RequestParam(value = "nameStartsWith", required = false) String nameStartsWith,
                                  @RequestParam(value = "modifiedSince", required = false)
-                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime modifiedSince) {
+                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime modifiedSince,
+                                 @RequestParam(value = "comics", required = false) String comics) {
 
         var marvelErrorMessages = charactersFilterValidator.validateParameters(limit, sortField);
         if(!marvelErrorMessages.isEmpty())
             return ResponseEntity.status(HttpStatus.CONFLICT).body(marvelErrorMessages);
 
-        var characterResponses = marvelCharacterService.getAllByFilter( name, nameStartsWith, modifiedSince, offset, limit, sortField)
+        var characterResponses = marvelCharacterService.getAllByFilter( name, nameStartsWith, modifiedSince, offset, limit, sortField, comics)
                 .stream()
                 .map(CharacterResponse::new)
                 .collect(Collectors.toList());
 
-        return getResponseEntityDataWrapper(limit, offset, characterResponses, marvelCharacterService.countByFilter(name, nameStartsWith, modifiedSince));
+        return getResponseEntityDataWrapper(limit, offset, characterResponses, marvelCharacterService.countByFilter(name, nameStartsWith, modifiedSince, comics));
     }
 
 }

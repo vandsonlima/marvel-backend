@@ -1,12 +1,11 @@
 package com.vandson.marvel.character.domain;
 
+import com.vandson.marvel.comics.domain.Comic;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,14 +22,18 @@ public class CharactersSpecification {
             public Predicate toPredicate(Root<MarvelCharacter> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
 
-                if(StringUtils.hasText(filter.getName())) {
+                if(StringUtils.hasText(filter.getName()))
                     predicates.add(criteriaBuilder.equal(root.get("name"), filter.getName()));
-                }
-                if(StringUtils.hasText(filter.getNameStartsWith())) {
+                if(StringUtils.hasText(filter.getNameStartsWith()))
                     predicates.add(criteriaBuilder.like(root.get("name"), filter.getNameStartsWith()+"%"));
-                }
                 if(Objects.nonNull(filter.getModifiedSince()))
                     predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("modified"), filter.getModifiedSince()));
+                if(!CollectionUtils.isEmpty(filter.getComics())){
+                    Join<Comic, MarvelCharacter> comics = root.join("comics");
+                    Expression<Long> parentExpression = comics.get("id");
+                    predicates.add(parentExpression.in(filter.getComics()));
+                }
+
 
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             }

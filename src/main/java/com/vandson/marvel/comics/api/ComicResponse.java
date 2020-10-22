@@ -93,7 +93,7 @@ public class ComicResponse {
         List<ObjectSummary> list = marvelCharacters.stream()
                 .map(marvelCharacter -> new ObjectSummary(marvelCharacter.getResourceURI(), marvelCharacter.getName()))
                 .collect(Collectors.toList());
-        this.characters = new SummaryList(list, linkTo(methodOn(CharacterFinderController.class).getAll(null, null, null, null, null, null)).toString());
+        this.characters = new SummaryList(list, linkTo(methodOn(CharacterFinderController.class).getAll(null, null, null, null, null, null, null)).toString());
     }
 
 }
