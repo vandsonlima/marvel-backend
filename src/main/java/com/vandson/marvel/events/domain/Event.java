@@ -3,8 +3,10 @@ package com.vandson.marvel.events.domain;
 import com.vandson.marvel.character.domain.Character;
 import com.vandson.marvel.comics.domain.Comic;
 import com.vandson.marvel.compartilhado.domain.Image;
+import com.vandson.marvel.compartilhado.domain.MarvelObjects;
 import com.vandson.marvel.compartilhado.domain.Url;
 import com.vandson.marvel.events.api.EventController;
+import com.vandson.marvel.series.domain.Series;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +27,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Event {
+public class Event implements MarvelObjects {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +44,8 @@ public class Event {
     private List<Comic> comics;
     @ManyToMany
     private List<Character> characters;
+    @ManyToMany(mappedBy = "events")
+    private List<Series> series;
 
 
     @Deprecated

@@ -59,8 +59,9 @@ public class EventController extends MarvelController {
     }
 
     @GetMapping("/event/{eventId}")
-    public Event getOne(@PathVariable @NotNull Long eventId) {
+    public EventResponse getOne(@PathVariable @NotNull Long eventId) {
         return eventService.getById(eventId)
+                .map(EventResponse::new)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "event not found"));
     }
 }

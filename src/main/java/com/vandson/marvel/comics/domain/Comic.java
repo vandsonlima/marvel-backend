@@ -3,7 +3,9 @@ package com.vandson.marvel.comics.domain;
 import com.vandson.marvel.character.domain.Character;
 import com.vandson.marvel.comics.api.ComicsController;
 import com.vandson.marvel.compartilhado.domain.Image;
+import com.vandson.marvel.compartilhado.domain.MarvelObjects;
 import com.vandson.marvel.compartilhado.domain.Url;
+import com.vandson.marvel.series.domain.Series;
 import lombok.Getter;
 import org.springframework.util.Assert;
 
@@ -20,7 +22,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Getter
 @Entity
-public class Comic {
+public class Comic implements MarvelObjects {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,6 +59,9 @@ public class Comic {
     private List<Image> images;
     @ManyToMany
     private List<Character> characters;
+
+    @ManyToMany(mappedBy = "comics")
+    private List<Series> series;
 
     @Deprecated
     public Comic() {

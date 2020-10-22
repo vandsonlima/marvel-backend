@@ -7,6 +7,8 @@ import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.compartilhado.domain.Url;
 import com.vandson.marvel.events.domain.Event;
 import com.vandson.marvel.events.domain.EventRepository;
+import com.vandson.marvel.series.domain.Series;
+import com.vandson.marvel.series.domain.SeriesRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -27,11 +29,13 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
     private final CharacterRepository characterRepository;
     private final ComicRepository marvelComicsRepository;
     private final EventRepository eventRepository;
+    private final SeriesRepository seriesRepository;
 
-    public ApplicationStartup(CharacterRepository characterRepository, ComicRepository marvelComicsRepository, EventRepository eventRepository) {
+    public ApplicationStartup(CharacterRepository characterRepository, ComicRepository marvelComicsRepository, EventRepository eventRepository, SeriesRepository seriesRepository) {
         this.characterRepository = characterRepository;
         this.marvelComicsRepository = marvelComicsRepository;
         this.eventRepository = eventRepository;
+        this.seriesRepository = seriesRepository;
     }
 
     @Override
@@ -39,6 +43,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         insertCharacters(characterRepository);
         insertComics(marvelComicsRepository);
         insertEvents(eventRepository);
+        insertSeries(seriesRepository);
     }
 
     private void insertCharacters(CharacterRepository characterRepository) {
@@ -163,5 +168,23 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         }
         eventRepository.saveAll(events);
 
+    }
+
+    private void insertSeries(SeriesRepository seriesRepository) {
+        Character character = characterRepository.getOne(1L);
+        Comic comic = marvelComicsRepository.getOne(2L);
+        Event event = eventRepository.getOne(1L);
+        Series newSeries = Series.builder()
+                .characters(List.of(character))
+                .comics(List.of(comic))
+                .description("the ultimate")
+                .title("avengers")
+                .startYear(2020)
+                .endYear(2022)
+                .events(List.of(event))
+                .thumbnail(new Image("target", "jpg"))
+                .build();
+
+        seriesRepository.save(newSeries);
     }
 }

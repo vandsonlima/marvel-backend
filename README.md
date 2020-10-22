@@ -29,7 +29,7 @@ Apresentação da proposta técnica em processo seletivo
 - /v1/public/characters/{characterId}/stories
 
 ## Como executar os testes unitários
-Para executar os testes  basta realizar o comando ''' ./mvnw test '''
+Para executar os testes  basta realizar o comando ``` ./mvnw test ```
 
 ## Observações de implementação
 * No endpoint ```/v1/public/characters/{characterId}/comics``` alguns filtros não foram implementados para poder seguir 
@@ -38,5 +38,8 @@ com demais features. Os filtros implementados foram:
     - titleStartsWith
     - formatComic
     - formatType
-* Ainda no endpoint de **comics** foram suprimidas a implementação ou validação de alguns campos como ```variants```, ```collections``` e ```collectionIssues```
+* Ainda no endpoint de **comics** foram suprimidas a implementação ou validação de alguns campos como ```variants```, ```collections``` e ```collectionIssues```.
+* A ordenação só está aceitando uma opção de ordenação.
+* Os endpoints ```events``` e ```series``` estão sem o next e previous
+* O endpoint ```/v1/public/characters/{characterId}/stories``` funciona apenas com a listagem completa, sem filtros e sem parâmetros de paginação e ordenação
 

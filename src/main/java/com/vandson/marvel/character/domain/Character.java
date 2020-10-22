@@ -4,8 +4,10 @@ import com.sun.istack.NotNull;
 import com.vandson.marvel.character.api.CharacterController;
 import com.vandson.marvel.comics.domain.Comic;
 import com.vandson.marvel.compartilhado.domain.Image;
+import com.vandson.marvel.compartilhado.domain.MarvelObjects;
 import com.vandson.marvel.compartilhado.domain.Url;
 import com.vandson.marvel.events.domain.Event;
+import com.vandson.marvel.series.domain.Series;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -23,7 +25,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Getter
 @Entity
-public class Character {
+public class Character implements MarvelObjects {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +46,9 @@ public class Character {
 
     @ManyToMany(mappedBy = "characters")
     private List<Event> events;
+
+    @ManyToMany(mappedBy = "characters")
+    private List<Series> series;
 
     @Deprecated
     public Character() {
