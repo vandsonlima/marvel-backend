@@ -33,7 +33,7 @@ public class ComicsSpecification {
                 if(StringUtils.hasText(filter.getTitleStartsWith()))
                     predicates.add(criteriaBuilder.like(root.get("title"), filter.getTitleStartsWith()+"%"));
                 if(Objects.nonNull(filter.getFormatComic()))
-                    predicates.add(criteriaBuilder.equal(root.get("formatComic"), filter.getFormatComic()));
+                    predicates.add(criteriaBuilder.equal(root.get("format"), filter.getFormatComic()));
                 if(Objects.nonNull(filter.getFormatType()))
                     predicates.add(criteriaBuilder.equal(root.get("formatType"), filter.getFormatType()));
 

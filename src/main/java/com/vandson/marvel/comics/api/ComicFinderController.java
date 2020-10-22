@@ -3,8 +3,6 @@ package com.vandson.marvel.comics.api;
 import com.vandson.marvel.character.domain.MarvelCharacterRepository;
 import com.vandson.marvel.comics.domain.ComicsService;
 import com.vandson.marvel.comics.domain.FilterComics;
-import com.vandson.marvel.comics.domain.FormatComic;
-import com.vandson.marvel.comics.domain.FormatType;
 import com.vandson.marvel.compartilhado.api.MarvelController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,23 +36,23 @@ public class ComicFinderController extends MarvelController {
                                     @RequestParam(value = "orderBy", required = false) String sortField,
                                     @RequestParam(value = "name", required = false) String title,
                                     @RequestParam(value = "nameStartsWith", required = false) String titleStartsWith,
-                                    @RequestParam(value = "format" , required = false) FormatComic formatComic,
-                                    @RequestParam(value = "format" , required = false) FormatType formatType){
+                                    @RequestParam(value = "formatComic" , required = false) String formatComic,
+                                    @RequestParam(value = "formatType" , required = false) String formatType){
 
         var optionalMarvelCharacter = marvelCharacterRepository.findById(characterId);
         if(optionalMarvelCharacter.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("character not found.");
 
-        var marvelErrorMessages = comicFilterValidator.validateParameters(limit, sortField);
+        var marvelErrorMessages = comicFilterValidator.validateParameters(limit, sortField, formatComic, formatType);
         if(!marvelErrorMessages.isEmpty())
             return ResponseEntity.status(HttpStatus.CONFLICT).body(marvelErrorMessages);
 
-        FilterComics filterComics = FilterComics.builder()
-                .character(optionalMarvelCharacter.get())
-                .title(title)
-                .titleStartsWith(titleStartsWith)
-                .formatComic(formatComic)
-                .formatType(formatType)
+        FilterComics filterComics = FilterComics.FilterComicsBuilder.aFilterComics()
+                .withCharacter(optionalMarvelCharacter.get())
+                .withTitle(title)
+                .withTitleStartsWith(titleStartsWith)
+                .withFormatComic(formatComic)
+                .withFormatType(formatType)
                 .build();
 
         var comicResponses = comicsService.getAllByFilter(filterComics, offset, limit, sortField)

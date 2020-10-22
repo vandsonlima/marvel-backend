@@ -38,14 +38,14 @@ public class Comic {
     private String diamondCode;
     private String ean;
     private String issn;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private FormatComic format;
     private int pageCount;
     @ElementCollection
     private List<String> textObjects;
     @ElementCollection
     private List<Url> urls;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private FormatType formatType;
 
     @ElementCollection
@@ -77,7 +77,7 @@ public class Comic {
 
         this.title = title;
         this.issueNumber = issueNumber;
-        if(FormatType.Collection.equals(formatType))
+        if(FormatType.collection.equals(formatType))
             this.issueNumber = 0D;
         this.variantDescription = variantDescription;
         this.description = description;

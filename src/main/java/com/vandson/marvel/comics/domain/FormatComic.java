@@ -1,14 +1,16 @@
 package com.vandson.marvel.comics.domain;
 
+import java.util.Arrays;
+
 public enum FormatComic {
-    Comic("Comic"),
-    Magazine("Magazine"),
-    trade_paperback("Trade Paperback"),
-    hard_cover("Hard Cover"),
-    Digest("Digest"),
-    Graphic_novel("Graphic Novel"),
-    Digital_comic("Digital Comic"),
-    Infinite_comic("Infinite Comic");
+    Comic("comic"),
+    Magazine("magazine"),
+    trade_paperback("trade Paperback"),
+    hard_cover("hard cover"),
+    Digest("digest"),
+    Graphic_novel("graphic novel"),
+    Digital_comic("digital comic"),
+    Infinite_comic("infinite comic");
 
     private final String name;
 
@@ -18,5 +20,12 @@ public enum FormatComic {
 
     public String getName() {
         return name;
+    }
+
+    public static FormatComic getByName(String name){
+        return Arrays.stream(FormatComic.values())
+                .filter(formatComic -> formatComic.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 }

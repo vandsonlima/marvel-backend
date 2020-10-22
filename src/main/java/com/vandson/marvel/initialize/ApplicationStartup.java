@@ -65,7 +65,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
                     .withDiamondCode("DIAMND-001"+i)
                     .withFormat(FormatComic.Comic)
                     .withIssueNumber(200d)
-                    .withFormatType(FormatType.Comic)
+                    .withFormatType(FormatType.comic)
                     .withCharacters(Arrays.asList(ironMan, captain))
                     .withThumbnail(new Image("type", "jpeg"))
                     .withTextObjects(Arrays.asList("Ironman", "captain", "civil", "war"))
@@ -84,7 +84,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
                     .withCharacters(Arrays.asList(ironMan, captain))
                     .withThumbnail(new Image("type", "jpeg"))
                     .withTextObjects(Arrays.asList("Ironman", "captain", "civil", "war"))
-                    .withFormatType(FormatType.Comic)
+                    .withFormatType(FormatType.comic)
                     .build();
         }
 
@@ -99,7 +99,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
                 .withCharacters(Arrays.asList(ironMan, captain))
                 .withThumbnail(new Image("type", "jpeg"))
                 .withTextObjects(Arrays.asList("Ironman", "captain", "civil", "war"))
-                .withFormatType(FormatType.Collection)
+                .withFormatType(FormatType.collection)
                 .withDates(Arrays.asList(new ComicDate("type", LocalDate.of(1980,2, 12)),
                         new ComicDate("type", LocalDate.of(1990,2, 20)),
                         new ComicDate("type",LocalDate.now())))
