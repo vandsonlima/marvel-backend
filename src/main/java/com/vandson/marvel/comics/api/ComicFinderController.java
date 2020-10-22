@@ -6,7 +6,6 @@ import com.vandson.marvel.comics.domain.FilterComics;
 import com.vandson.marvel.comics.domain.FormatComic;
 import com.vandson.marvel.comics.domain.FormatType;
 import com.vandson.marvel.compartilhado.api.MarvelController;
-import com.vandson.marvel.compartilhado.domain.FilterValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +22,12 @@ public class ComicFinderController extends MarvelController {
 
     private final MarvelCharacterRepository marvelCharacterRepository;
     private final ComicsService comicsService;
-    private final FilterValidator filterValidator;
+    private final ComicFilterValidator comicFilterValidator;
 
-    public ComicFinderController(MarvelCharacterRepository marvelCharacterRepository, ComicsService comicsService, FilterValidator filterValidator) {
+    public ComicFinderController(MarvelCharacterRepository marvelCharacterRepository, ComicsService comicsService, ComicFilterValidator comicFilterValidator) {
         this.marvelCharacterRepository = marvelCharacterRepository;
         this.comicsService = comicsService;
-        this.filterValidator = filterValidator;
+        this.comicFilterValidator = comicFilterValidator;
     }
 
 
@@ -46,7 +45,7 @@ public class ComicFinderController extends MarvelController {
         if(optionalMarvelCharacter.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("character not found.");
 
-        var marvelErrorMessages = filterValidator.validateParameters(limit, sortField);
+        var marvelErrorMessages = comicFilterValidator.validateParameters(limit, sortField);
         if(!marvelErrorMessages.isEmpty())
             return ResponseEntity.status(HttpStatus.CONFLICT).body(marvelErrorMessages);
 
