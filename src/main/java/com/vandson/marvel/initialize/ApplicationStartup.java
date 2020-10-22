@@ -1,9 +1,12 @@
 package com.vandson.marvel.initialize;
 
-import com.vandson.marvel.compartilhado.domain.Image;
-import com.vandson.marvel.character.domain.MarvelCharacter;
-import com.vandson.marvel.character.domain.MarvelCharacterRepository;
+import com.vandson.marvel.character.domain.Character;
+import com.vandson.marvel.character.domain.CharacterRepository;
 import com.vandson.marvel.comics.domain.*;
+import com.vandson.marvel.compartilhado.domain.Image;
+import com.vandson.marvel.compartilhado.domain.Url;
+import com.vandson.marvel.events.domain.Event;
+import com.vandson.marvel.events.domain.EventRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -21,42 +24,45 @@ import java.util.List;
 @Component
 public class ApplicationStartup implements ApplicationListener<ApplicationReadyEvent> {
 
-    private final MarvelCharacterRepository marvelCharacterRepository;
+    private final CharacterRepository characterRepository;
     private final ComicRepository marvelComicsRepository;
+    private final EventRepository eventRepository;
 
-    public ApplicationStartup(MarvelCharacterRepository marvelCharacterRepository, ComicRepository marvelComicsRepository) {
-        this.marvelCharacterRepository = marvelCharacterRepository;
+    public ApplicationStartup(CharacterRepository characterRepository, ComicRepository marvelComicsRepository, EventRepository eventRepository) {
+        this.characterRepository = characterRepository;
         this.marvelComicsRepository = marvelComicsRepository;
+        this.eventRepository = eventRepository;
     }
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
-        insertCharacters(marvelCharacterRepository);
+        insertCharacters(characterRepository);
         insertComics(marvelComicsRepository);
+        insertEvents(eventRepository);
     }
 
-    private void insertCharacters(MarvelCharacterRepository marvelCharacterRepository) {
-        MarvelCharacter ironMan = new MarvelCharacter("Iron Man", "the strongest", LocalDateTime.now());
+    private void insertCharacters(CharacterRepository characterRepository) {
+        Character ironMan = new Character("Iron Man", "the strongest", LocalDateTime.now());
         ironMan.addUrl("index", "http://ironman.com");
         ironMan.addUrl("contact", "http://ironman.com/contact");
 
-        MarvelCharacter captain = new MarvelCharacter("Captain America", "the leader", LocalDateTime.now());
+        Character captain = new Character("Captain America", "the leader", LocalDateTime.now());
         captain.addUrl("index", "http://captain.com");
 
-        MarvelCharacter hulk = new MarvelCharacter("Hulk", "Hulk smash", LocalDateTime.now());
+        Character hulk = new Character("Hulk", "Hulk smash", LocalDateTime.now());
         hulk.addThumbnail("http:images.io/hjulk", "jpeg");
 
-        MarvelCharacter blackWidow = new MarvelCharacter("Black widow", "the smallest", LocalDateTime.now());
+        Character blackWidow = new Character("Black widow", "the smallest", LocalDateTime.now());
         blackWidow.addThumbnail("imageBucket.io/blackwidow", "gif");
 
-        marvelCharacterRepository.saveAll(Arrays.asList(ironMan, captain, hulk, blackWidow));
+        characterRepository.saveAll(Arrays.asList(ironMan, captain, hulk, blackWidow));
     }
 
     private void insertComics(ComicRepository marvelComicsRepository) {
 
-        MarvelCharacter ironMan = marvelCharacterRepository.getOne(1L);
-        MarvelCharacter captain = marvelCharacterRepository.getOne(2L);
-        MarvelCharacter blackWidow = marvelCharacterRepository.getOne(4L);
+        Character ironMan = characterRepository.getOne(1L);
+        Character captain = characterRepository.getOne(2L);
+        Character blackWidow = characterRepository.getOne(4L);
         List<Comic> comics = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Comic comic = ComicBuilder.aMarvelComic()
@@ -87,6 +93,8 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
                     .withTextObjects(Arrays.asList("Ironman", "captain", "civil", "war"))
                     .withFormatType(FormatType.comic)
                     .build();
+
+            comics.add(comic);
         }
 
 
@@ -128,5 +136,32 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         comics.add(comic3);
 
         marvelComicsRepository.saveAll(comics);
+    }
+
+    private void insertEvents(EventRepository eventRepository) {
+        Character ironMan = characterRepository.getOne(1L);
+        Character captain = characterRepository.getOne(2L);
+        Character blackWidow = characterRepository.getOne(4L);
+        List<Event> events = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            Comic randomComic = marvelComicsRepository.getOne((long) (2+i)); // random number between 12 and 1
+            Comic randomComic2 = marvelComicsRepository.getOne((long) (3+i)); // random number between 12 and 1
+
+            Event newEvent = Event.builder()
+                    .characters(List.of(ironMan, captain, blackWidow))
+                    .comics(List.of(randomComic, randomComic2))
+                    .start(LocalDate.of(2020,2,15+ i))
+                    .end(LocalDate.of(2020,2,17+ i))
+                    .thumbnail(new Image("image.com/id", "jpg"))
+                    .title("Marvel Comics 1"+i)
+                    .urls(List.of(new Url("url.com", "url.com"), new Url("url.com", "url.com")))
+                    .description("the greatest comicCon")
+                    .build();
+
+            events.add(newEvent);
+        }
+        eventRepository.saveAll(events);
+
     }
 }

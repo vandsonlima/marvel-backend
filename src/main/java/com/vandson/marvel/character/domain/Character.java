@@ -5,6 +5,7 @@ import com.vandson.marvel.character.api.CharacterController;
 import com.vandson.marvel.comics.domain.Comic;
 import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.compartilhado.domain.Url;
+import com.vandson.marvel.events.domain.Event;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -22,7 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Getter
 @Entity
-public class MarvelCharacter {
+public class Character {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,11 +42,14 @@ public class MarvelCharacter {
     @ManyToMany(mappedBy = "characters")
     private List<Comic> comics;
 
+    @ManyToMany(mappedBy = "characters")
+    private List<Event> events;
+
     @Deprecated
-    public MarvelCharacter() {
+    public Character() {
     }
 
-    public MarvelCharacter(@NotBlank String name, @NotBlank String description, @NotNull LocalDateTime modified) {
+    public Character(@NotBlank String name, @NotBlank String description, @NotNull LocalDateTime modified) {
         this.name = name;
         this.description = description;
         this.modified = modified;

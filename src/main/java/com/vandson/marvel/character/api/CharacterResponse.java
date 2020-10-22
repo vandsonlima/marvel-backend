@@ -1,13 +1,15 @@
 package com.vandson.marvel.character.api;
 
 import com.sun.istack.NotNull;
-import com.vandson.marvel.character.domain.MarvelCharacter;
+import com.vandson.marvel.character.domain.Character;
 import com.vandson.marvel.comics.api.ComicFinderController;
 import com.vandson.marvel.comics.domain.Comic;
 import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.compartilhado.domain.ObjectSummary;
 import com.vandson.marvel.compartilhado.domain.SummaryList;
 import com.vandson.marvel.compartilhado.domain.Url;
+import com.vandson.marvel.events.api.EventController;
+import com.vandson.marvel.events.domain.Event;
 import lombok.Getter;
 
 import javax.validation.Valid;
@@ -33,19 +35,20 @@ public class CharacterResponse {
     private final Image thumbnail;
     private final String resourceURI;
     private SummaryList comics;
+    private SummaryList events;
     //private SummaryObject series;
     //private SummaryObject stories;
-    //private SummaryObject events;
 
-    public CharacterResponse(@NotNull @Valid MarvelCharacter marvelCharacter) {
-        this.name = marvelCharacter.getName();
-        this.id =  marvelCharacter.getId().intValue();
-        this.description = marvelCharacter.getDescription();
-        this.modified = marvelCharacter.getModified();
-        this.urls = marvelCharacter.getUrls();
-        this.thumbnail = marvelCharacter.getThumbnail();
-        this.resourceURI = marvelCharacter.getResourceURI();
-        fillComics(marvelCharacter.getComics());
+    public CharacterResponse(@NotNull @Valid Character character) {
+        this.name = character.getName();
+        this.id =  character.getId().intValue();
+        this.description = character.getDescription();
+        this.modified = character.getModified();
+        this.urls = character.getUrls();
+        this.thumbnail = character.getThumbnail();
+        this.resourceURI = character.getResourceURI();
+        fillComics(character.getComics());
+        fillEvents(character.getEvents());
     }
 
     private void fillComics(List<Comic> comics) {
@@ -55,7 +58,12 @@ public class CharacterResponse {
                 .collect(Collectors.toList()), linkTo(methodOn(ComicFinderController.class).getComics((long) this.id, null, null, null, null, null, null, null)).toString());
     }
 
-    public SummaryList getComics() {
-        return comics;
+    private void fillEvents(List<Event> events) {
+        this.events = new SummaryList( events
+                .stream()
+                .map(event -> new ObjectSummary(event.getResourceURI(), event.getTitle()))
+                .collect(Collectors.toList()), linkTo(methodOn(EventController.class).getAll((long) this.id,null,null,null,null,null,null,null)).toString()
+        );
     }
+
 }

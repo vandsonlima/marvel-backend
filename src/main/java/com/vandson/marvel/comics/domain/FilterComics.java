@@ -1,6 +1,6 @@
 package com.vandson.marvel.comics.domain;
 
-import com.vandson.marvel.character.domain.MarvelCharacter;
+import com.vandson.marvel.character.domain.Character;
 import lombok.Getter;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -11,13 +11,13 @@ import org.springframework.util.StringUtils;
  */
 @Getter
 public class FilterComics {
-    private final MarvelCharacter character;
+    private final Character character;
     private final String title;
     private final String titleStartsWith;
     private FormatComic formatComic;
     private FormatType formatType;
 
-    private FilterComics(MarvelCharacter character, String title, String titleStartsWith, String formatComic, String formatType) {
+    private FilterComics(Character character, String title, String titleStartsWith, String formatComic, String formatType) {
         Assert.notNull(character, "Character is required");
         this.character = character;
         this.title = title;
@@ -28,8 +28,12 @@ public class FilterComics {
             this.formatType = FormatType.valueOf(formatType);
     }
 
+    public static FilterComicsBuilder builder(){
+        return FilterComicsBuilder.aFilterComics();
+    }
+
     public static final class FilterComicsBuilder {
-        private MarvelCharacter character;
+        private Character character;
         private String title;
         private String titleStartsWith;
         private String formatComic;
@@ -38,11 +42,11 @@ public class FilterComics {
         private FilterComicsBuilder() {
         }
 
-        public static FilterComicsBuilder aFilterComics() {
+        private static FilterComicsBuilder aFilterComics() {
             return new FilterComicsBuilder();
         }
 
-        public FilterComicsBuilder withCharacter(MarvelCharacter character) {
+        public FilterComicsBuilder withCharacter(Character character) {
             this.character = character;
             return this;
         }

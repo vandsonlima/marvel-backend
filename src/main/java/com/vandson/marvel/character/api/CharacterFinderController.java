@@ -1,6 +1,6 @@
 package com.vandson.marvel.character.api;
 
-import com.vandson.marvel.character.domain.MarvelCharacterService;
+import com.vandson.marvel.character.domain.CharacterService;
 import com.vandson.marvel.compartilhado.api.MarvelController;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 @RequestMapping("v1/public")
 public class CharacterFinderController extends MarvelController {
 
-    private final MarvelCharacterService marvelCharacterService;
+    private final CharacterService characterService;
     private final CharactersFilterValidator charactersFilterValidator;
 
-    public CharacterFinderController(MarvelCharacterService marvelCharacterService, CharactersFilterValidator charactersFilterValidator) {
-        this.marvelCharacterService = marvelCharacterService;
+    public CharacterFinderController(CharacterService characterService, CharactersFilterValidator charactersFilterValidator) {
+        this.characterService = characterService;
         this.charactersFilterValidator = charactersFilterValidator;
     }
 
@@ -43,12 +43,12 @@ public class CharacterFinderController extends MarvelController {
         if(!marvelErrorMessages.isEmpty())
             return ResponseEntity.status(HttpStatus.CONFLICT).body(marvelErrorMessages);
 
-        var characterResponses = marvelCharacterService.getAllByFilter( name, nameStartsWith, modifiedSince, offset, limit, sortField, comics)
+        var characterResponses = characterService.getAllByFilter( name, nameStartsWith, modifiedSince, offset, limit, sortField, comics)
                 .stream()
                 .map(CharacterResponse::new)
                 .collect(Collectors.toList());
 
-        return getResponseEntityDataWrapper(limit, offset, characterResponses, marvelCharacterService.countByFilter(name, nameStartsWith, modifiedSince, comics));
+        return getResponseEntityDataWrapper(limit, offset, characterResponses, characterService.countByFilter(name, nameStartsWith, modifiedSince, comics));
     }
 
 }

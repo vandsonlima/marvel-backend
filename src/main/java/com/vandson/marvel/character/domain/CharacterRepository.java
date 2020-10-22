@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MarvelCharacterRepository extends JpaRepository<MarvelCharacter, Long>, JpaSpecificationExecutor<MarvelCharacter> {
+public interface CharacterRepository extends JpaRepository<Character, Long>, JpaSpecificationExecutor<Character> {
 
 
 

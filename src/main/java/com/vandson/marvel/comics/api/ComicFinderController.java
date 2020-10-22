@@ -1,6 +1,6 @@
 package com.vandson.marvel.comics.api;
 
-import com.vandson.marvel.character.domain.MarvelCharacterRepository;
+import com.vandson.marvel.character.domain.CharacterRepository;
 import com.vandson.marvel.comics.domain.ComicsService;
 import com.vandson.marvel.comics.domain.FilterComics;
 import com.vandson.marvel.compartilhado.api.MarvelController;
@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/v1/public")
 public class ComicFinderController extends MarvelController {
 
-    private final MarvelCharacterRepository marvelCharacterRepository;
+    private final CharacterRepository characterRepository;
     private final ComicsService comicsService;
     private final ComicFilterValidator comicFilterValidator;
 
-    public ComicFinderController(MarvelCharacterRepository marvelCharacterRepository, ComicsService comicsService, ComicFilterValidator comicFilterValidator) {
-        this.marvelCharacterRepository = marvelCharacterRepository;
+    public ComicFinderController(CharacterRepository characterRepository, ComicsService comicsService, ComicFilterValidator comicFilterValidator) {
+        this.characterRepository = characterRepository;
         this.comicsService = comicsService;
         this.comicFilterValidator = comicFilterValidator;
     }
@@ -39,7 +39,7 @@ public class ComicFinderController extends MarvelController {
                                     @RequestParam(value = "formatComic" , required = false) String formatComic,
                                     @RequestParam(value = "formatType" , required = false) String formatType){
 
-        var optionalMarvelCharacter = marvelCharacterRepository.findById(characterId);
+        var optionalMarvelCharacter = characterRepository.findById(characterId);
         if(optionalMarvelCharacter.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("character not found.");
 
@@ -47,7 +47,7 @@ public class ComicFinderController extends MarvelController {
         if(!marvelErrorMessages.isEmpty())
             return ResponseEntity.status(HttpStatus.CONFLICT).body(marvelErrorMessages);
 
-        FilterComics filterComics = FilterComics.FilterComicsBuilder.aFilterComics()
+        FilterComics filterComics = FilterComics.builder()
                 .withCharacter(optionalMarvelCharacter.get())
                 .withTitle(title)
                 .withTitleStartsWith(titleStartsWith)
@@ -62,4 +62,5 @@ public class ComicFinderController extends MarvelController {
 
         return getResponseEntityDataWrapper(limit, offset, comicResponses, comicsService.countByFilter(filterComics));
     }
+
 }

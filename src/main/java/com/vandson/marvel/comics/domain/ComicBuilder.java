@@ -1,7 +1,7 @@
 package com.vandson.marvel.comics.domain;
 
 import com.vandson.marvel.compartilhado.domain.Image;
-import com.vandson.marvel.character.domain.MarvelCharacter;
+import com.vandson.marvel.character.domain.Character;
 import com.vandson.marvel.compartilhado.domain.Url;
 
 import javax.persistence.Embedded;
@@ -39,7 +39,7 @@ public final class ComicBuilder {
 //    private List<ComicPriceResponse> prices;
     private Image thumbnail;
     private List<Image> images;
-    private List<MarvelCharacter> characters;
+    private List<Character> characters;
     private FormatType formatType;
     @Embedded
     private List<ComicDate> dates;
@@ -137,7 +137,7 @@ public final class ComicBuilder {
         return this;
     }
 
-    public ComicBuilder withCharacters(List<MarvelCharacter> characters){
+    public ComicBuilder withCharacters(List<Character> characters){
         this.characters = characters;
         return this;
     }

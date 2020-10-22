@@ -1,7 +1,6 @@
 package com.vandson.marvel.character.api;
 
-import com.vandson.marvel.character.domain.MarvelCharacter;
-import com.vandson.marvel.character.domain.MarvelCharacterRepository;
+import com.vandson.marvel.character.domain.CharacterRepository;
 import com.vandson.marvel.compartilhado.api.MarvelController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
 
 /**
  * @author Vandson (vaondson.vslima@gmail.com)
@@ -21,16 +18,16 @@ import java.util.Optional;
 @RequestMapping("v1/public")
 public class CharacterController extends MarvelController {
 
-    private final MarvelCharacterRepository marvelCharacterRepository;
+    private final CharacterRepository characterRepository;
 
 
-    public CharacterController(MarvelCharacterRepository marvelCharacterRepository) {
-        this.marvelCharacterRepository = marvelCharacterRepository;
+    public CharacterController(CharacterRepository characterRepository) {
+        this.characterRepository = characterRepository;
     }
 
     @GetMapping("/characters/{characterId}")
     public ResponseEntity get(@PathVariable("characterId") Long id) {
-        var optionalMarvelCharacter = marvelCharacterRepository.findById(id);
+        var optionalMarvelCharacter = characterRepository.findById(id);
         if(optionalMarvelCharacter.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not found.");
 

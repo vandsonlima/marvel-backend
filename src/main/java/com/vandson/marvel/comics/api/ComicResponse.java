@@ -1,7 +1,7 @@
 package com.vandson.marvel.comics.api;
 
 import com.vandson.marvel.character.api.CharacterFinderController;
-import com.vandson.marvel.character.domain.MarvelCharacter;
+import com.vandson.marvel.character.domain.Character;
 import com.vandson.marvel.comics.domain.Comic;
 import com.vandson.marvel.comics.domain.ComicDate;
 import com.vandson.marvel.comics.domain.ComicPrice;
@@ -89,8 +89,8 @@ public class ComicResponse {
         return this;
     }
 
-    private void addSummaryCharacters(@NotNull List<MarvelCharacter> marvelCharacters) {
-        List<ObjectSummary> list = marvelCharacters.stream()
+    private void addSummaryCharacters(@NotNull List<Character> characters) {
+        List<ObjectSummary> list = characters.stream()
                 .map(marvelCharacter -> new ObjectSummary(marvelCharacter.getResourceURI(), marvelCharacter.getName()))
                 .collect(Collectors.toList());
         this.characters = new SummaryList(list, linkTo(methodOn(CharacterFinderController.class).getAll(null, null, null, null, null, null, null)).toString());

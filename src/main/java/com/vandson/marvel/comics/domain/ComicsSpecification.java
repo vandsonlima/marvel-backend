@@ -1,7 +1,6 @@
 package com.vandson.marvel.comics.domain;
 
-import com.vandson.marvel.character.domain.FilterCharacter;
-import com.vandson.marvel.character.domain.MarvelCharacter;
+import com.vandson.marvel.character.domain.Character;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 

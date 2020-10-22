@@ -1,6 +1,6 @@
 package com.vandson.marvel.comics.domain;
 
-import com.vandson.marvel.character.domain.MarvelCharacter;
+import com.vandson.marvel.character.domain.Character;
 import com.vandson.marvel.comics.api.ComicsController;
 import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.compartilhado.domain.Url;
@@ -56,7 +56,7 @@ public class Comic {
     @ElementCollection
     private List<Image> images;
     @ManyToMany
-    private List<MarvelCharacter> characters;
+    private List<Character> characters;
 
     @Deprecated
     public Comic() {
@@ -65,7 +65,7 @@ public class Comic {
 
     public Comic(int digitalId, String title, Double issueNumber, String variantDescription, String description, LocalDate modified, String isbn, String upc,
                  String diamondCode, String ean, String issn, FormatComic format, int pageCount, List<String> textObjects, List<Url> urls, FormatType formatType,
-                 List<ComicDate> dates, List<ComicPrice> prices, Image thumbnail, List<Image> images, List<MarvelCharacter> characters) {
+                 List<ComicDate> dates, List<ComicPrice> prices, Image thumbnail, List<Image> images, List<Character> characters) {
 
         Assert.notNull(formatType, "format type invalid");
 

@@ -11,15 +11,15 @@ import java.util.List;
  * @since 21/10/2020
  */
 @Service
-public class MarvelCharacterServiceImpl implements MarvelCharacterService {
+public class CharacterServiceImpl implements CharacterService {
 
-    private final MarvelCharacterRepository marvelCharacterRepository;
+    private final CharacterRepository characterRepository;
 
-    public MarvelCharacterServiceImpl(MarvelCharacterRepository marvelCharacterRepository) {
-        this.marvelCharacterRepository = marvelCharacterRepository;
+    public CharacterServiceImpl(CharacterRepository characterRepository) {
+        this.characterRepository = characterRepository;
     }
 
-    public List<MarvelCharacter> getAllByFilter(String name, String nameStartsWith, LocalDateTime modifiedSince, Integer offset, Integer limit, String sortField, String comics){
+    public List<Character> getAllByFilter(String name, String nameStartsWith, LocalDateTime modifiedSince, Integer offset, Integer limit, String sortField, String comics){
         var filterCharacter = FilterCharacter.builder()
                 .name(name)
                 .nameStartsWith(nameStartsWith)
@@ -29,7 +29,7 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
         
 
         var characterSpecification = CharactersSpecification.filter(filterCharacter);
-        return marvelCharacterRepository.findAll(characterSpecification, new PageableImpl(offset, limit, sortField).getPageable()).getContent();
+        return characterRepository.findAll(characterSpecification, new PageableImpl(offset, limit, sortField).getPageable()).getContent();
     }
 
     @Override
@@ -39,6 +39,6 @@ public class MarvelCharacterServiceImpl implements MarvelCharacterService {
                 .nameStartsWith(nameStartsWith)
                 .modifiedSince(modifiedSince)
                 .build();
-        return marvelCharacterRepository.count(CharactersSpecification.filter(filterCharacter));
+        return characterRepository.count(CharactersSpecification.filter(filterCharacter));
     }
 }
