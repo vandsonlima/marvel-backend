@@ -1,7 +1,6 @@
-package com.vandson.marvel.events.api;
+package com.vandson.marvel.events.domain;
 
 import com.vandson.marvel.character.domain.Character;
-import com.vandson.marvel.character.domain.FilterCharacter;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
 

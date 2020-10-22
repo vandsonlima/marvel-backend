@@ -1,9 +1,7 @@
 package com.vandson.marvel.events.domain;
 
 import com.vandson.marvel.character.domain.Character;
-import com.vandson.marvel.character.domain.FilterCharacter;
 import com.vandson.marvel.comics.domain.Comic;
-import com.vandson.marvel.events.api.FilterEvent;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;

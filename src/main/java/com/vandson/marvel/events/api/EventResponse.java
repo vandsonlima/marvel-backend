@@ -3,7 +3,6 @@ package com.vandson.marvel.events.api;
 import com.vandson.marvel.character.api.CharacterFinderController;
 import com.vandson.marvel.character.domain.Character;
 import com.vandson.marvel.comics.api.ComicFinderController;
-import com.vandson.marvel.comics.api.ComicsController;
 import com.vandson.marvel.comics.domain.Comic;
 import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.compartilhado.domain.ObjectSummary;
@@ -14,14 +13,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;

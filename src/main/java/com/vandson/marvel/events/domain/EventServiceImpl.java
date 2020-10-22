@@ -3,9 +3,9 @@ package com.vandson.marvel.events.domain;
 import com.vandson.marvel.character.domain.Character;
 import com.vandson.marvel.compartilhado.domain.PageableImpl;
 import com.vandson.marvel.compartilhado.errors.MarvelException;
-import com.vandson.marvel.events.api.FilterEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,6 +36,8 @@ public class EventServiceImpl implements EventService {
                 .modifiedSince(modifiedSince)
                 .comics(comics)
                 .build();
+        if(StringUtils.isEmpty(sortField))
+            sortField = "-start";
 
         return eventRepository.findAll(EventSpecification.filter(filterEvent), new PageableImpl(offset, limit, sortField).getPageable()).getContent();
     }

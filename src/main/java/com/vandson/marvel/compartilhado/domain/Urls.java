@@ -1,4 +1,4 @@
-package com.vandson.marvel.events.domain;
+package com.vandson.marvel.compartilhado.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

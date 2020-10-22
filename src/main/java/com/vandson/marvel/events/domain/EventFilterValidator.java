@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class EventFilterValidator {
 
-    public static final List<String> ACCEPTED_LIST_ORDERING = Arrays.asList("title", "startDate", "modified", "-modified", "-title", "-startDate");
+    public static final List<String> ACCEPTED_LIST_ORDERING = Arrays.asList("title", "start", "modified", "-modified", "-title", "-start");
 
     public List<MarvelErrorMessage> validateParameters(Integer limit, String sortField) {
         var errors = new ArrayList<MarvelErrorMessage>();

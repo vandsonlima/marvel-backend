@@ -19,8 +19,8 @@ Apresentação da proposta técnica em processo seletivo
 * Clonar ou baixar o [projeto](https://github.com/vandsonlima/marvel-backend.git)
   ```./mvnw clean package && java -jar target/marvel-0.0.1-SNAPSHOT.jar```
 
-## Como acessar
-* Acessar os endpoints a partir da url http://localhost:8080/
+## Como acessar e testar
+* Acessar os endpoints a partir da url http://localhost:8080
 - /v1/public/characters
 - /v1/public/characters/{characterId}
 - /v1/public/characters/{characterId}/comics
@@ -28,5 +28,15 @@ Apresentação da proposta técnica em processo seletivo
 - /v1/public/characters/{characterId}/series
 - /v1/public/characters/{characterId}/stories
 
-## Como testar
+## Como executar os testes unitários
 Para executar os testes  basta realizar o comando ''' ./mvnw test '''
+
+## Observações de implementação
+* No endpoint ```/v1/public/characters/{characterId}/comics``` alguns filtros não foram implementados para poder seguir 
+com demais features. Os filtros implementados foram: 
+    - title
+    - titleStartsWith
+    - formatComic
+    - formatType
+* Ainda no endpoint de **comics** foram suprimidas a implementação ou validação de alguns campos como ```variants```, ```collections``` e ```collectionIssues```
+
