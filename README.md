@@ -3,9 +3,6 @@
 ## Descrição
 Reimplementação dos endpoints de **characters** da [API da Marvel](https://developer.marvel.com/docs#!/public)
 
-## Objetivo
-Apresentação da proposta técnica em processo seletivo
-
 ## Tecnologias Utilizadas
 
 ### Back-end
