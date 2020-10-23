@@ -3,7 +3,6 @@ package com.vandson.marvel.events.api;
 import com.vandson.marvel.character.domain.CharacterRepository;
 import com.vandson.marvel.compartilhado.api.MarvelController;
 import com.vandson.marvel.compartilhado.errors.MarvelException;
-import com.vandson.marvel.events.domain.Event;
 import com.vandson.marvel.events.domain.EventService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;

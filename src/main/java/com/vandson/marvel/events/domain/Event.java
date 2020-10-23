@@ -7,12 +7,14 @@ import com.vandson.marvel.compartilhado.domain.MarvelObjects;
 import com.vandson.marvel.compartilhado.domain.Url;
 import com.vandson.marvel.events.api.EventController;
 import com.vandson.marvel.series.domain.Series;
+import com.vandson.marvel.stories.domain.Storie;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,8 +46,10 @@ public class Event implements MarvelObjects {
     private List<Comic> comics;
     @ManyToMany
     private List<Character> characters;
-    @ManyToMany(mappedBy = "events")
+    @ManyToMany
     private List<Series> series;
+    @ManyToMany
+    private List<Storie> stories;
 
 
     @Deprecated
@@ -73,5 +77,11 @@ public class Event implements MarvelObjects {
     @Override
     public int hashCode() {
         return Objects.hash(description, title, end, start, modified, thumbnail);
+    }
+
+    public void addSerie(Series newSeries) {
+        if(Objects.isNull(this.series))
+            this.series = new ArrayList<>();
+        this.series.add(newSeries);
     }
 }

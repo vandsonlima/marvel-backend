@@ -5,7 +5,9 @@ import com.vandson.marvel.comics.api.ComicsController;
 import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.compartilhado.domain.MarvelObjects;
 import com.vandson.marvel.compartilhado.domain.Url;
+import com.vandson.marvel.events.domain.Event;
 import com.vandson.marvel.series.domain.Series;
+import com.vandson.marvel.stories.domain.Storie;
 import lombok.Getter;
 import org.springframework.util.Assert;
 
@@ -62,6 +64,10 @@ public class Comic implements MarvelObjects {
 
     @ManyToMany(mappedBy = "comics")
     private List<Series> series;
+    @ManyToMany(mappedBy = "comics")
+    private List<Event> events;
+    @ManyToMany(mappedBy = "comics")
+    private List<Storie> stories;
 
     @Deprecated
     public Comic() {

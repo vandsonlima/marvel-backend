@@ -5,6 +5,8 @@ import com.vandson.marvel.comics.domain.Comic;
 import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.compartilhado.domain.MarvelObjects;
 import com.vandson.marvel.events.domain.Event;
+import com.vandson.marvel.series.domain.Series;
+import com.vandson.marvel.stories.api.StoriesController;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +15,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * @author Vandson (vandson.vslima@gmail.com)
@@ -23,7 +28,7 @@ import java.util.List;
 @Builder
 @Getter
 @Entity
-public class Stories implements MarvelObjects {
+public class Storie implements MarvelObjects {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,12 +46,14 @@ public class Stories implements MarvelObjects {
     private List<Event> events;
     @ManyToMany
     private List<Character> characters;
+    @ManyToMany
+    private List<Series> series;
     @ManyToOne
     private Comic originalIssue;
 
     @Override
     public String getResourceURI() {
-        return null;
+        return linkTo(methodOn(StoriesController.class).getOne(this.id)).toString();
     }
 
 }

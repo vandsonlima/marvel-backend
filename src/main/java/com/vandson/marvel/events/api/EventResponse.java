@@ -1,11 +1,7 @@
 package com.vandson.marvel.events.api;
 
-import com.vandson.marvel.character.api.CharacterFinderController;
-import com.vandson.marvel.character.domain.Character;
-import com.vandson.marvel.comics.api.ComicFinderController;
-import com.vandson.marvel.comics.domain.Comic;
+import com.vandson.marvel.compartilhado.api.SummaryListFactory;
 import com.vandson.marvel.compartilhado.domain.Image;
-import com.vandson.marvel.compartilhado.domain.ObjectSummary;
 import com.vandson.marvel.compartilhado.domain.SummaryList;
 import com.vandson.marvel.compartilhado.domain.Url;
 import com.vandson.marvel.events.domain.Event;
@@ -16,10 +12,6 @@ import org.springframework.util.Assert;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * @author Vandson (vandson.vslima@gmail.com)
@@ -40,6 +32,8 @@ public class EventResponse {
     private Image thumbnail;
     private SummaryList comics;
     private SummaryList characters;
+    private SummaryList series;
+    private SummaryList stories;
 
     public EventResponse(@NotNull Event event){
         Assert.notNull(event, "assert may be not null");
@@ -52,17 +46,9 @@ public class EventResponse {
         this.start = event.getStart();
         this.thumbnail = event.getThumbnail();
         this.resourceURI = event.getResourceURI();
-        fillComics(event.getComics());
-        fillCharacters(event.getCharacters());
-    }
-
-    private void fillCharacters(List<Character> characters) {
-        var collect = characters.stream().map(character -> new ObjectSummary(character.getResourceURI(), character.getName())).collect(Collectors.toList());
-        this.characters = new SummaryList(collect, linkTo(methodOn(CharacterFinderController.class).getAll(null, null, null, null, null, null, null)).toString());
-    }
-
-    private void fillComics(List<Comic> comics) {
-        var collect = comics.stream().map(comic -> new ObjectSummary(comic.getResourceURI(), comic.getTitle())).collect(Collectors.toList());
-        this.comics = new SummaryList(collect, linkTo(methodOn(ComicFinderController.class).getComics(null, null, null, null, null, null, null, null)).toString());
+        this.comics = new SummaryListFactory().getComics(event.getComics());
+        this.characters = new SummaryListFactory().getCharacters(event.getCharacters());
+        this.series = new SummaryListFactory().getSeries(event.getSeries());
+        this.stories = new SummaryListFactory().getStories(event.getStories());
     }
 }

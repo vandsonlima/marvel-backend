@@ -20,7 +20,13 @@ Apresentação da proposta técnica em processo seletivo
   ```./mvnw clean package && java -jar target/marvel-0.0.1-SNAPSHOT.jar```
 
 ## Como acessar e testar
-* Acessar os endpoints a partir da url http://localhost:8080
+* Ao inicializar, o sistema executa os inserts no banco em memória dos registros necessários para o teste.
+
+* Acessar os endpoints a partir da url http://localhost:8080 
+
+  e.g.
+``` curl --request GET \ --url http://localhost:8080/v1/public/characters/2 ```
+  
 - /v1/public/characters
 - /v1/public/characters/{characterId}
 - /v1/public/characters/{characterId}/comics
@@ -42,4 +48,4 @@ com demais features. Os filtros implementados foram:
 * A ordenação só está aceitando uma opção de ordenação.
 * Os endpoints ```events``` e ```series``` estão sem o next e previous
 * O endpoint ```/v1/public/characters/{characterId}/stories``` funciona apenas com a listagem completa, sem filtros e sem parâmetros de paginação e ordenação
-
+* Os filtros dos endpoints de ```/v1/public/characters/{characterId}/events``` e ```/v1/public/characters/{characterId}/Series``` também foram reduzidos, sem alguns dos filtros de ids de outros relacionamentos 

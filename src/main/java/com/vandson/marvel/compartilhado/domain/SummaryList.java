@@ -1,6 +1,7 @@
 package com.vandson.marvel.compartilhado.domain;
 
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,7 +15,7 @@ public class SummaryList {
     public static final int MAX_SIZE_ITEMS = 20;
     private final int available;
     private final int returned;
-    private final String collectionURI;
+    private String collectionURI;
     private final List<ObjectSummary> items;
 
     public SummaryList(@NotNull List<ObjectSummary> items, @NotNull String resourceURI) {
@@ -23,7 +24,8 @@ public class SummaryList {
 
         this.available = items.size();
         this.returned = Math.min(items.size(), MAX_SIZE_ITEMS);
-        this.collectionURI = resourceURI;
+        if(!CollectionUtils.isEmpty(items))
+            this.collectionURI = resourceURI;
         this.items = items.stream().limit(returned).collect(Collectors.toList());
     }
 

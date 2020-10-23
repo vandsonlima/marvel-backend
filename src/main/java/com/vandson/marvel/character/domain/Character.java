@@ -8,6 +8,7 @@ import com.vandson.marvel.compartilhado.domain.MarvelObjects;
 import com.vandson.marvel.compartilhado.domain.Url;
 import com.vandson.marvel.events.domain.Event;
 import com.vandson.marvel.series.domain.Series;
+import com.vandson.marvel.stories.domain.Storie;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -50,6 +51,9 @@ public class Character implements MarvelObjects {
     @ManyToMany(mappedBy = "characters")
     private List<Series> series;
 
+    @ManyToMany(mappedBy = "characters")
+    private List<Storie> stories;
+
     @Deprecated
     public Character() {
     }
@@ -70,5 +74,13 @@ public class Character implements MarvelObjects {
 
     public String getResourceURI() {
         return  linkTo(methodOn(CharacterController.class).get(this.id)).toString();
+    }
+
+    public List<Storie> getStories() {
+        return stories;
+    }
+
+    public void setStories(List<Storie> stories) {
+        this.stories = stories;
     }
 }

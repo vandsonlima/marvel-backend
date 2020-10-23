@@ -34,8 +34,8 @@ public class ComicFinderController extends MarvelController {
                                     @RequestParam(value = "limit", required = false) Integer limit,
                                     @RequestParam(value = "offset", required = false) Integer offset,
                                     @RequestParam(value = "orderBy", required = false) String sortField,
-                                    @RequestParam(value = "name", required = false) String title,
-                                    @RequestParam(value = "nameStartsWith", required = false) String titleStartsWith,
+                                    @RequestParam(value = "title", required = false) String title,
+                                    @RequestParam(value = "titleStartsWith", required = false) String titleStartsWith,
                                     @RequestParam(value = "formatComic" , required = false) String formatComic,
                                     @RequestParam(value = "formatType" , required = false) String formatType){
 

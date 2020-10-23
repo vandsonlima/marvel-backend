@@ -9,6 +9,9 @@ import com.vandson.marvel.events.domain.Event;
 import com.vandson.marvel.events.domain.EventRepository;
 import com.vandson.marvel.series.domain.Series;
 import com.vandson.marvel.series.domain.SeriesRepository;
+import com.vandson.marvel.stories.domain.Storie;
+import com.vandson.marvel.stories.domain.StoriesRepository;
+import com.vandson.marvel.stories.domain.StoryType;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,12 +34,14 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
     private final ComicRepository marvelComicsRepository;
     private final EventRepository eventRepository;
     private final SeriesRepository seriesRepository;
+    private final StoriesRepository storiesRepository;
 
-    public ApplicationStartup(CharacterRepository characterRepository, ComicRepository marvelComicsRepository, EventRepository eventRepository, SeriesRepository seriesRepository) {
+    public ApplicationStartup(CharacterRepository characterRepository, ComicRepository marvelComicsRepository, EventRepository eventRepository, SeriesRepository seriesRepository, StoriesRepository storiesRepository) {
         this.characterRepository = characterRepository;
         this.marvelComicsRepository = marvelComicsRepository;
         this.eventRepository = eventRepository;
         this.seriesRepository = seriesRepository;
+        this.storiesRepository = storiesRepository;
     }
 
     @Override
@@ -44,6 +50,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         insertComics(marvelComicsRepository);
         insertEvents(eventRepository);
         insertSeries(seriesRepository);
+        insertStories(storiesRepository);
     }
 
     private void insertCharacters(CharacterRepository characterRepository) {
@@ -129,7 +136,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
                 .withDiamondCode("DIAMND-10")
                 .withFormat(FormatComic.Digital_comic)
                 .withIssueNumber(200d)
-                .withCharacters(Arrays.asList(blackWidow))
+                .withCharacters(Collections.singletonList(blackWidow))
                 .withThumbnail(new Image("type", "jpeg"))
                 .withTextObjects(Arrays.asList("Ironman", "captain", "civil", "war"))
                 .withFormatType(FormatType.comic)
@@ -186,5 +193,28 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
                 .build();
 
         seriesRepository.save(newSeries);
+    }
+
+    private void insertStories(StoriesRepository storiesRepository) {
+        Character ironMan = characterRepository.getOne(1L);
+        Character captain = characterRepository.getOne(2L);
+        Character blackWidow = characterRepository.getOne(4L);
+
+        Comic randomComic = marvelComicsRepository.getOne(2L);
+        Comic randomComic2 = marvelComicsRepository.getOne(3L);
+
+        Event event = eventRepository.getOne(1L);
+
+        Storie newStorie = Storie.builder()
+                .comics(List.of(randomComic, randomComic2))
+                .characters(List.of(ironMan, captain, blackWidow))
+                .description("the last one")
+                .title("ABD")
+                .events(List.of(event))
+                .originalIssue(randomComic)
+                .storyType(StoryType.story)
+                .build();
+
+        storiesRepository.save(newStorie);
     }
 }

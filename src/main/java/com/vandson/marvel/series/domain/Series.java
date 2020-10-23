@@ -6,7 +6,7 @@ import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.compartilhado.domain.MarvelObjects;
 import com.vandson.marvel.compartilhado.domain.Url;
 import com.vandson.marvel.events.domain.Event;
-import com.vandson.marvel.stories.domain.Stories;
+import com.vandson.marvel.stories.domain.Storie;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,7 +41,7 @@ public class Series implements MarvelObjects {
     @ManyToMany
     private List<Comic> comics;
     @ManyToMany
-    private List<Stories> stories;
+    private List<Storie> stories;
     @ManyToMany
     private List<Event> events;
     @ManyToMany

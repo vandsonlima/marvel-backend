@@ -5,6 +5,7 @@ import com.vandson.marvel.character.domain.Character;
 import com.vandson.marvel.comics.domain.Comic;
 import com.vandson.marvel.comics.domain.ComicDate;
 import com.vandson.marvel.comics.domain.ComicPrice;
+import com.vandson.marvel.compartilhado.api.SummaryListFactory;
 import com.vandson.marvel.compartilhado.domain.Image;
 import com.vandson.marvel.compartilhado.domain.ObjectSummary;
 import com.vandson.marvel.compartilhado.domain.SummaryList;
@@ -53,10 +54,9 @@ public class ComicResponse {
     private Image thumbnail;
     private List<Image> images;
     private SummaryList characters;
-
-//    private SummaryList stories;
-//    private SummaryList events;
-//    private SummaryList series;
+    private SummaryList stories;
+    private SummaryList events;
+    private SummaryList series;
 
 
     public ComicResponse() {
@@ -85,15 +85,15 @@ public class ComicResponse {
         this.dates = comic.getDates();
         this.prices = comic.getPrices();
         this.resourceURI = linkTo(methodOn(ComicsController.class).getOne((long) this.id)).toString();
-        addSummaryCharacters(comic.getCharacters());
+
+        this.characters = new SummaryListFactory().getCharacters(comic.getCharacters());
+        this.series = new SummaryListFactory().getSeries(comic.getSeries());
+        this.events = new SummaryListFactory().getEvents(comic.getEvents());
+        this.stories = new SummaryListFactory().getStories(comic.getStories());
+
         return this;
     }
 
-    private void addSummaryCharacters(@NotNull List<Character> characters) {
-        List<ObjectSummary> list = characters.stream()
-                .map(marvelCharacter -> new ObjectSummary(marvelCharacter.getResourceURI(), marvelCharacter.getName()))
-                .collect(Collectors.toList());
-        this.characters = new SummaryList(list, linkTo(methodOn(CharacterFinderController.class).getAll(null, null, null, null, null, null, null)).toString());
-    }
+
 
 }
